@@ -15,6 +15,8 @@
 		5195EFE725C114A9001F08B3 /* WinnipegSpecialsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5195EFE625C114A9001F08B3 /* WinnipegSpecialsUITests.swift */; };
 		5195F00025C11B2C001F08B3 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5195EFFF25C11B2C001F08B3 /* Category.swift */; };
 		51BB2A9125C523BB00299819 /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BB2A9025C523BA00299819 /* Restaurant.swift */; };
+		51BB2A9E25CA6A5C00299819 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */; };
+		51F694FB2642346B00B5292B /* Deals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F694FA2642346B00B5292B /* Deals.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		5195EFE825C114A9001F08B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5195EFFF25C11B2C001F08B3 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		51BB2A9025C523BA00299819 /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
+		51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
+		51F694FA2642346B00B5292B /* Deals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deals.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,8 +105,10 @@
 			children = (
 				5195EFC925C114A8001F08B3 /* WinnipegSpecialsApp.swift */,
 				5195EFFF25C11B2C001F08B3 /* Category.swift */,
+				51F694FA2642346B00B5292B /* Deals.swift */,
 				51BB2A9025C523BA00299819 /* Restaurant.swift */,
 				5195EFCB25C114A8001F08B3 /* ContentView.swift */,
+				51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */,
 				5195EFCD25C114A9001F08B3 /* Assets.xcassets */,
 				5195EFD225C114A9001F08B3 /* Info.plist */,
 				5195EFCF25C114A9001F08B3 /* Preview Content */,
@@ -266,8 +272,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				51BB2A9125C523BB00299819 /* Restaurant.swift in Sources */,
+				51F694FB2642346B00B5292B /* Deals.swift in Sources */,
 				5195EFCC25C114A8001F08B3 /* ContentView.swift in Sources */,
 				5195EFCA25C114A8001F08B3 /* WinnipegSpecialsApp.swift in Sources */,
+				51BB2A9E25CA6A5C00299819 /* ImageCarouselView.swift in Sources */,
 				5195F00025C11B2C001F08B3 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
