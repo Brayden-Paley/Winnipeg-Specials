@@ -12,10 +12,23 @@ struct Deals: View {
     var name: String
     
     var body: some View {
-        List {
+        VStack(alignment: .leading) {
             Text("First")
-        }.font(.largeTitle)
-        .navigationTitle(name)
+        }
+        .padding(.leading, 10).padding(.top, 15)
+        .frame(minWidth: 0,
+        maxWidth: .infinity,
+        minHeight: 0,
+        maxHeight: .infinity,
+        alignment: .topLeading)
+        .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) { 
+                        VStack {
+                            Text(name).font(.largeTitle).fontWeight(.heavy)
+                        }
+                    }
+                }
     }
 }
 

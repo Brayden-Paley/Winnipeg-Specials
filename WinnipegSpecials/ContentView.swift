@@ -3,18 +3,19 @@
 //  WinnipegSpecials
 //
 //  Created by Brayden Paley on 2021-01-26.
-//
 
 import SwiftUI
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(category: categoryList)
+        Group {
+            ContentView(category: categoryList)
+        }
     }
 }
 
 struct ContentView: View {
-    var category: [Category] = []
+    var category: [Category] = categoryList
     
     var body: some View {
         NavigationView {
@@ -53,7 +54,8 @@ struct ContentView: View {
                            minHeight: 0,
                            maxHeight: .infinity,
                            alignment: .topLeading)
-                }
+                    
+                }.navigationBarHidden(true)
             }
         }
     }
@@ -89,7 +91,7 @@ struct RestaurantCell: View {
     
     var body: some View {
         NavigationLink(destination: Deals(name: name)) {
-            Image(imageName).resizable().frame(width: 80.0, height: 70.0)
+            Image(imageName).resizable().frame(width: 80.0, height: 70.0).border(Color.black, width: 1)
         }
         .buttonStyle(PlainButtonStyle())
     }
