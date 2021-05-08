@@ -20,7 +20,7 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ScrollView(.vertical) {
-                VStack{
+                VStack {
                     GeometryReader { geometry in
                         ImageCarouselView(numberOfImages: 3) {
                             Image("EarlsLogo")
@@ -42,7 +42,7 @@ struct ContentView: View {
                     }.frame(height: 200, alignment: .top)
                     
                     
-                    VStack(alignment: .leading, spacing: 20.0){
+                    VStack(alignment: .leading, spacing: 20.0) {
                         ForEach(category){ category in
                             CategoryCell(category: category)
                         }

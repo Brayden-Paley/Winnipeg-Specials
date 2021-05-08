@@ -13,7 +13,7 @@ struct Deals: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            
+
             Collapsible(
                 label: { Text("Everyday Deals").fontWeight(.heavy) },
                 content: {
@@ -22,6 +22,7 @@ struct Deals: View {
                         Spacer()
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Monday").fontWeight(.heavy) },
@@ -31,6 +32,7 @@ struct Deals: View {
                         Spacer()
                     }
                     .frame(maxWidth: .infinity)
+                    .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Tuesday").fontWeight(.heavy) },
@@ -40,12 +42,14 @@ struct Deals: View {
                         Spacer()
                     }
                     .frame(maxWidth: .infinity)
+                    .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Wednesday").fontWeight(.heavy) },
                 content: {
                     HStack {
                         Text("Content")
+                        Spacer()
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -58,6 +62,7 @@ struct Deals: View {
                         Spacer()
                     }
                     .frame(maxWidth: .infinity)
+                    .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Friday").fontWeight(.heavy) },
@@ -67,6 +72,7 @@ struct Deals: View {
                         Spacer()
                     }
                     .frame(maxWidth: .infinity)
+                    .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Saturday").fontWeight(.heavy) },
@@ -76,6 +82,7 @@ struct Deals: View {
                         Spacer()
                     }
                     .frame(maxWidth: .infinity)
+                    .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Sunday").fontWeight(.heavy) },
@@ -89,7 +96,6 @@ struct Deals: View {
                 }).frame(maxWidth: .infinity)
             
             
-
         }
         .padding(.leading, 10).padding(.top, 15)
         .frame(minWidth: 0,
@@ -129,14 +135,17 @@ extension UIScreen{
 
 struct DealCell: View {
     var body: some View {
-        VStack{
+        VStack(alignment: .leading, spacing: 5){
             HStack{
-                Text("Sample text").frame(width: UIScreen.screenWidth*0.60, alignment: .leading).background(Color.blue)
-                
+                Text("Title of the deal").frame(width: UIScreen.screenWidth*0.60, alignment: .leading).background(Color.blue)
+                Text("$5").frame(width: UIScreen.screenWidth*0.10, alignment: .leading).background(Color.purple)
+                Image(systemName: "arrow.up").frame(width: UIScreen.screenWidth*0.10, alignment: .top).background(Color.red)
             }
             
-            HStack{
-                
+            HStack(alignment: .top){
+                //plus 8 in this section is hardcoded, definitiely should be changed
+                Text("Description of the deal that is long long long long long long").frame(width: (UIScreen.screenWidth*0.70) + 8, alignment: .leading).background(Color.blue)
+                Image(systemName: "arrow.down").frame(width: UIScreen.screenWidth*0.10, alignment: .top).background(Color.red)
             }
         }
     }

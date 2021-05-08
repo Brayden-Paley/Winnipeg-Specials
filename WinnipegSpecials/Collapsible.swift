@@ -14,12 +14,12 @@ struct Collapsible<Content: View>: View {
     @State private var collapsed: Bool = true
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             Button(
                 action: { self.collapsed.toggle() },
                 label: {
                     HStack {
-                        self.label()
+                        self.label().frame(alignment: .leading)
                         Spacer()
                         Image(systemName: self.collapsed ? "chevron.down" : "chevron.up")
                     }
@@ -29,10 +29,10 @@ struct Collapsible<Content: View>: View {
             )
             .buttonStyle(PlainButtonStyle())
             
-            VStack {
+            VStack(alignment: .leading) {
                 self.content()
             }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: collapsed ? 0 : .none)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: collapsed ? 0 : .none, alignment: .leading)
             .clipped()
             .animation(.easeOut)
             .transition(.slide)
