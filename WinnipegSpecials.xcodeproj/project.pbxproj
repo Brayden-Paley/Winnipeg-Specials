@@ -17,6 +17,7 @@
 		51BB2A9125C523BB00299819 /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BB2A9025C523BA00299819 /* Restaurant.swift */; };
 		51BB2A9E25CA6A5C00299819 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */; };
 		51F694FB2642346B00B5292B /* Deals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F694FA2642346B00B5292B /* Deals.swift */; };
+		51F695032646022700B5292B /* Collapsible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F695022646022700B5292B /* Collapsible.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		51BB2A9025C523BA00299819 /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
 		51F694FA2642346B00B5292B /* Deals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deals.swift; sourceTree = "<group>"; };
+		51F695022646022700B5292B /* Collapsible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collapsible.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 			children = (
 				5195EFC925C114A8001F08B3 /* WinnipegSpecialsApp.swift */,
 				5195EFFF25C11B2C001F08B3 /* Category.swift */,
+				51F695022646022700B5292B /* Collapsible.swift */,
 				51F694FA2642346B00B5292B /* Deals.swift */,
 				51BB2A9025C523BA00299819 /* Restaurant.swift */,
 				5195EFCB25C114A8001F08B3 /* ContentView.swift */,
@@ -277,6 +280,7 @@
 				5195EFCA25C114A8001F08B3 /* WinnipegSpecialsApp.swift in Sources */,
 				51BB2A9E25CA6A5C00299819 /* ImageCarouselView.swift in Sources */,
 				5195F00025C11B2C001F08B3 /* Category.swift in Sources */,
+				51F695032646022700B5292B /* Collapsible.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

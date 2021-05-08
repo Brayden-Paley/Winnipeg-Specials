@@ -13,7 +13,83 @@ struct Deals: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("First")
+            
+            Collapsible(
+                label: { Text("Everyday Deals").fontWeight(.heavy) },
+                content: {
+                    HStack {
+                        DealCell()
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }).frame(maxWidth: .infinity)
+            Collapsible(
+                label: { Text("Monday").fontWeight(.heavy) },
+                content: {
+                    HStack {
+                        Text("Content")
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                }).frame(maxWidth: .infinity)
+            Collapsible(
+                label: { Text("Tuesday").fontWeight(.heavy) },
+                content: {
+                    HStack {
+                        Text("Content")
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                }).frame(maxWidth: .infinity)
+            Collapsible(
+                label: { Text("Wednesday").fontWeight(.heavy) },
+                content: {
+                    HStack {
+                        Text("Content")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                }).frame(maxWidth: .infinity)
+            Collapsible(
+                label: { Text("Thursday").fontWeight(.heavy) },
+                content: {
+                    HStack {
+                        Text("Content")
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                }).frame(maxWidth: .infinity)
+            Collapsible(
+                label: { Text("Friday").fontWeight(.heavy) },
+                content: {
+                    HStack {
+                        Text("Content")
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                }).frame(maxWidth: .infinity)
+            Collapsible(
+                label: { Text("Saturday").fontWeight(.heavy) },
+                content: {
+                    HStack {
+                        Text("Content")
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                }).frame(maxWidth: .infinity)
+            Collapsible(
+                label: { Text("Sunday").fontWeight(.heavy) },
+                content: {
+                    HStack {
+                        Text("Content")
+                        Spacer()
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                }).frame(maxWidth: .infinity)
+            
+            
+
         }
         .padding(.leading, 10).padding(.top, 15)
         .frame(minWidth: 0,
@@ -22,14 +98,49 @@ struct Deals: View {
         maxHeight: .infinity,
         alignment: .topLeading)
         .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .principal) { 
-                        VStack {
-                            Text(name).font(.largeTitle).fontWeight(.heavy)
+        .navigationBarItems(trailing:
+                        Button(action: {
+                            print("Plus button pressed...")
+                        }) {
+                            Image(systemName: "plus")
+                                                .resizable()
+                                                .padding(6)
+                                                .frame(width: 24, height: 24)
+                                                .background(Color.blue)
+                                                .clipShape(Circle())
+                                                .foregroundColor(.white)
                         }
-                    }
+        )
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                VStack {
+                    Text(name).font(.largeTitle).fontWeight(.heavy)
                 }
+            }
+        }
     }
 }
+
+extension UIScreen{
+   static let screenWidth = UIScreen.main.bounds.size.width
+   static let screenHeight = UIScreen.main.bounds.size.height
+   static let screenSize = UIScreen.main.bounds.size
+}
+
+struct DealCell: View {
+    var body: some View {
+        VStack{
+            HStack{
+                Text("Sample text").frame(width: UIScreen.screenWidth*0.60, alignment: .leading).background(Color.blue)
+                
+            }
+            
+            HStack{
+                
+            }
+        }
+    }
+}
+
 
 
