@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5147113626474FAB007A11B2 /* DealCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5147113526474FAB007A11B2 /* DealCreationView.swift */; };
 		5195EFCA25C114A8001F08B3 /* WinnipegSpecialsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5195EFC925C114A8001F08B3 /* WinnipegSpecialsApp.swift */; };
 		5195EFCC25C114A8001F08B3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5195EFCB25C114A8001F08B3 /* ContentView.swift */; };
 		5195EFCE25C114A9001F08B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5195EFCD25C114A9001F08B3 /* Assets.xcassets */; };
@@ -16,7 +17,7 @@
 		5195F00025C11B2C001F08B3 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5195EFFF25C11B2C001F08B3 /* Category.swift */; };
 		51BB2A9125C523BB00299819 /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BB2A9025C523BA00299819 /* Restaurant.swift */; };
 		51BB2A9E25CA6A5C00299819 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */; };
-		51F694FB2642346B00B5292B /* Deals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F694FA2642346B00B5292B /* Deals.swift */; };
+		51F694FB2642346B00B5292B /* DealsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F694FA2642346B00B5292B /* DealsView.swift */; };
 		51F695032646022700B5292B /* Collapsible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F695022646022700B5292B /* Collapsible.swift */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5147113526474FAB007A11B2 /* DealCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealCreationView.swift; sourceTree = "<group>"; };
 		5195EFC625C114A8001F08B3 /* WinnipegSpecials.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WinnipegSpecials.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5195EFC925C114A8001F08B3 /* WinnipegSpecialsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinnipegSpecialsApp.swift; sourceTree = "<group>"; };
 		5195EFCB25C114A8001F08B3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -53,7 +55,7 @@
 		5195EFFF25C11B2C001F08B3 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		51BB2A9025C523BA00299819 /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
-		51F694FA2642346B00B5292B /* Deals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deals.swift; sourceTree = "<group>"; };
+		51F694FA2642346B00B5292B /* DealsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsView.swift; sourceTree = "<group>"; };
 		51F695022646022700B5292B /* Collapsible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collapsible.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,7 +110,8 @@
 				5195EFC925C114A8001F08B3 /* WinnipegSpecialsApp.swift */,
 				5195EFFF25C11B2C001F08B3 /* Category.swift */,
 				51F695022646022700B5292B /* Collapsible.swift */,
-				51F694FA2642346B00B5292B /* Deals.swift */,
+				5147113526474FAB007A11B2 /* DealCreationView.swift */,
+				51F694FA2642346B00B5292B /* DealsView.swift */,
 				51BB2A9025C523BA00299819 /* Restaurant.swift */,
 				5195EFCB25C114A8001F08B3 /* ContentView.swift */,
 				51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */,
@@ -275,12 +278,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				51BB2A9125C523BB00299819 /* Restaurant.swift in Sources */,
-				51F694FB2642346B00B5292B /* Deals.swift in Sources */,
+				51F694FB2642346B00B5292B /* DealsView.swift in Sources */,
 				5195EFCC25C114A8001F08B3 /* ContentView.swift in Sources */,
 				5195EFCA25C114A8001F08B3 /* WinnipegSpecialsApp.swift in Sources */,
 				51BB2A9E25CA6A5C00299819 /* ImageCarouselView.swift in Sources */,
 				5195F00025C11B2C001F08B3 /* Category.swift in Sources */,
 				51F695032646022700B5292B /* Collapsible.swift in Sources */,
+				5147113626474FAB007A11B2 /* DealCreationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

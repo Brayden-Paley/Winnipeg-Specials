@@ -1,5 +1,5 @@
 //
-//  Deals.swift
+//  DealsView.swift
 //  WinnipegSpecials
 //
 //  Created by Brayden Paley on 2021-05-04.
@@ -8,8 +8,10 @@
 import SwiftUI
 import Foundation
 
-struct Deals: View {
-    var name: String
+struct DealsView: View {
+    var restaurantName: String
+    var deals: [Deal]
+    @State var isActive = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -17,9 +19,12 @@ struct Deals: View {
             Collapsible(
                 label: { Text("Everyday Deals").fontWeight(.heavy) },
                 content: {
-                    HStack {
-                        DealCell()
-                        Spacer()
+                    VStack(alignment: .leading, spacing: 15) {
+                        //for each Collapsible cell we will need to hit our API to check for deals, best to cache the deals eventually tho
+                        //hardcoded as deals[0] for now but should have SQL parameters that find based on the day + restaurant
+                        DealCell(deal: deals[0]).border(Color.black, width: 1)
+                        DealCell(deal: deals[1]).border(Color.black, width: 1)
+
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
@@ -104,23 +109,24 @@ struct Deals: View {
         maxHeight: .infinity,
         alignment: .topLeading)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarItems(trailing:
-                        Button(action: {
-                            print("Plus button pressed...")
-                        }) {
-                            Image(systemName: "plus")
-                                                .resizable()
-                                                .padding(6)
-                                                .frame(width: 24, height: 24)
-                                                .background(Color.blue)
-                                                .clipShape(Circle())
-                                                .foregroundColor(.white)
-                        }
-        )
-        .toolbar {
+        
+        .background(
+        NavigationLink(destination: DealCreationView(restaurantName: restaurantName), isActive: $isActive,
+         label: { EmptyView() })
+     )
+     .navigationBarItems(trailing:
+                            Button(action: { self.isActive = true }){
+                                Image(systemName: "plus")
+                                                    .resizable()
+                                                    .padding(6)
+                                                    .frame(width: 24, height: 24)
+                                                    .background(Color.blue)
+                                                    .clipShape(Circle()).foregroundColor(.white)
+                            })
+                .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack {
-                    Text(name).font(.largeTitle).fontWeight(.heavy)
+                    Text(restaurantName).font(.largeTitle).fontWeight(.heavy)
                 }
             }
         }
@@ -134,22 +140,41 @@ extension UIScreen{
 }
 
 struct DealCell: View {
+    var deal: Deal
+    var isActive = false
     var body: some View {
         VStack(alignment: .leading, spacing: 5){
             HStack{
-                Text("Title of the deal").frame(width: UIScreen.screenWidth*0.60, alignment: .leading).background(Color.blue)
-                Text("$5").frame(width: UIScreen.screenWidth*0.10, alignment: .leading).background(Color.purple)
-                Image(systemName: "arrow.up").frame(width: UIScreen.screenWidth*0.10, alignment: .top).background(Color.red)
+                Text(deal.title).fontWeight(.heavy).frame(width: UIScreen.screenWidth*0.60, alignment: .leading).padding(5)
+                Text("$" + deal.price).frame(width: UIScreen.screenWidth*0.10, alignment: .leading)
+                Button(action: {
+                    deal.rating = deal.rating + 1
+                    //has to update the backend eventually
+                }) {
+                    Image(systemName: "arrow.up").frame(width: UIScreen.screenWidth*0.10, alignment: .top)
+                }
+                
             }
             
             HStack(alignment: .top){
-                //plus 8 in this section is hardcoded, definitiely should be changed
-                Text("Description of the deal that is long long long long long long").frame(width: (UIScreen.screenWidth*0.70) + 8, alignment: .leading).background(Color.blue)
-                Image(systemName: "arrow.down").frame(width: UIScreen.screenWidth*0.10, alignment: .top).background(Color.red)
+                //plus 8 in this section is hardcoded, would like to change to be % 
+                Text(deal.description).frame(width: (UIScreen.screenWidth*0.70) + 8, alignment: .leading).padding(5)
+                Button(action: {
+                    deal.rating = deal.rating - 1
+                    //has to update the backend eventually
+                }) {
+                    Image(systemName: "arrow.down").frame(width: UIScreen.screenWidth*0.10, alignment: .top)
+                }
+                
             }
         }
     }
 }
 
 
-
+struct Deal {
+    var title: String
+    var description: String
+    var price: String
+    @State var rating = 0
+}

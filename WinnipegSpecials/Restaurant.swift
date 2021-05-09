@@ -10,92 +10,96 @@ struct Restaurant: Identifiable{
     var id = UUID()
     var name: String
     var imageName: String
-    // var deal: Deal maybe have a "Deal" object that that has the information for the deal, and then restaurants have an array of deals that is sent to it via an API
-    //temporary deal as a string
-    var deal: String
+    // var deals: deals maybe have a "deals" object that that has the information for the deals, and then restaurants have an array of deals that is sent to it via an API
+    //temporary deals as a string
+    var deals: [Deal]
 }
 
+
+var testDeal = [Deal(title: "Wine Monday", description:"Red or white", price: "5"),
+                Deal(title: "Fish Tacos", description:"Cod, Avocados, corn tortillas", price: "6")]
+
 var drinkList = [
-    Restaurant(name: "Brazen Hall", imageName: "BrazenHallLogo", deal: "test Deal"),
-    Restaurant(name: "Carlos & Murphys", imageName: "Carlos&MurphysLogo", deal: "test Deal"),
-    Restaurant(name: "Carne", imageName: "CarneLogo", deal: "test Deal"),
-    Restaurant(name: "Earls", imageName: "EarlsLogo", deal: "test Deal"),
-    Restaurant(name: "Mona Lisa", imageName: "MonaLisaLogo", deal: "test Deal"),
-    Restaurant(name: "The Grove", imageName: "TheGroveLogo", deal: "test Deal"),
-    Restaurant(name: "DeLucas", imageName: "DeLucasLogo", deal: "test Deal"),
+    Restaurant(name: "Brazen Hall", imageName: "BrazenHallLogo", deals: testDeal),
+    Restaurant(name: "Carlos & Murphys", imageName: "Carlos&MurphysLogo", deals: testDeal),
+    Restaurant(name: "Carne", imageName: "CarneLogo", deals: testDeal),
+    Restaurant(name: "Earls", imageName: "EarlsLogo", deals: testDeal),
+    Restaurant(name: "Mona Lisa", imageName: "MonaLisaLogo", deals: testDeal),
+    Restaurant(name: "The Grove", imageName: "TheGroveLogo", deals: testDeal),
+    Restaurant(name: "DeLucas", imageName: "DeLucasLogo", deals: testDeal),
 
 ]
 
 var mexicanList = [
-    Restaurant(name: "BMC", imageName: "BMCLogo", deal: "test Deal"),
-    Restaurant(name: "BurritoDelRio", imageName: "BurritoDelRioLogo", deal: "test Deal"),
-    Restaurant(name: "BurritoSplendido", imageName: "BurritoSpendidoLogo", deal: "test Deal"),
-    Restaurant(name: "Carlos&Murphys", imageName: "Carlos&MurphysLogo", deal: "test Deal"),
-    Restaurant(name: "JCsTaco", imageName: "JCsTacoLogo", deal: "test Deal"),
-    Restaurant(name: "LaCarnita", imageName: "LaCarnitaLogo", deal: "test Deal"),
-    Restaurant(name: "LaRoca", imageName: "LaRocaLogo", deal: "test Deal"),
-    Restaurant(name: "MamaJoes", imageName: "MamaJoesLogo", deal: "test Deal"),
-    Restaurant(name: "MuchoBurrito", imageName: "MuchoBurritoLogo", deal: "test Deal"),
-    Restaurant(name: "Qdoba", imageName: "QdobaLogo", deal: "test Deal"),
-    Restaurant(name: "SargentTaco", imageName: "SargentTacoLogo", deal: "test Deal"),
-    Restaurant(name: "TacoBell", imageName: "TacoBellLogo", deal: "test Deal"),
-    Restaurant(name: "TacoDelMar", imageName: "TacoDelMarLogo", deal: "test Deal"),
-    Restaurant(name: "TacoTime", imageName: "TacoTimeLogo", deal: "test Deal"),
+    Restaurant(name: "BMC", imageName: "BMCLogo", deals: testDeal),
+    Restaurant(name: "BurritoDelRio", imageName: "BurritoDelRioLogo", deals: testDeal),
+    Restaurant(name: "BurritoSplendido", imageName: "BurritoSpendidoLogo", deals: testDeal),
+    Restaurant(name: "Carlos&Murphys", imageName: "Carlos&MurphysLogo", deals: testDeal),
+    Restaurant(name: "JCsTaco", imageName: "JCsTacoLogo", deals: testDeal),
+    Restaurant(name: "LaCarnita", imageName: "LaCarnitaLogo", deals: testDeal),
+    Restaurant(name: "LaRoca", imageName: "LaRocaLogo", deals: testDeal),
+    Restaurant(name: "MamaJoes", imageName: "MamaJoesLogo", deals: testDeal),
+    Restaurant(name: "MuchoBurrito", imageName: "MuchoBurritoLogo", deals: testDeal),
+    Restaurant(name: "Qdoba", imageName: "QdobaLogo", deals: testDeal),
+    Restaurant(name: "SargentTaco", imageName: "SargentTacoLogo", deals: testDeal),
+    Restaurant(name: "TacoBell", imageName: "TacoBellLogo", deals: testDeal),
+    Restaurant(name: "TacoDelMar", imageName: "TacoDelMarLogo", deals: testDeal),
+    Restaurant(name: "TacoTime", imageName: "TacoTimeLogo", deals: testDeal),
 ]
 
 var pastaList = [
-    Restaurant(name: "Bellisimo", imageName: "BellisimoLogo", deal: "test Deal"),
-    Restaurant(name: "BonfireBistro", imageName: "BonfireBistroLogo", deal: "test Deal"),
-    Restaurant(name: "Carne", imageName: "CarneLogo", deal: "test Deal"),
-    Restaurant(name: "Harth", imageName: "HarthLogo", deal: "test Deal"),
-    Restaurant(name: "InfernosBistro", imageName: "InfernosBistroLogo", deal: "test Deal"),
-    Restaurant(name: "Kevins", imageName: "KevinsLogo", deal: "test Deal"),
-    Restaurant(name: "Maximes", imageName: "MaximesLogo", deal: "test Deal"),
-    Restaurant(name: "MonaLisa", imageName: "MonaLisaLogo", deal: "test Deal"),
-    Restaurant(name: "OldSpaghettiFactory", imageName: "OldSpaghettiFactoryLogo", deal: "test Deal"),
-    Restaurant(name: "OliveGarden", imageName: "OliveGardenLogo", deal: "test Deal"),
-    Restaurant(name: "Paradise", imageName: "ParadiseLogo", deal: "test Deal"),
-    Restaurant(name: "Pasquales", imageName: "PasqualesLogo", deal: "test Deal"),
-    Restaurant(name: "Passero", imageName: "PasseroLogo", deal: "test Deal"),
-    Restaurant(name: "SantaLucia", imageName: "SantaLuciaLogo", deal: "test Deal"),
-    Restaurant(name: "TonyRoma", imageName: "TonyRomaLogo", deal: "test Deal"),
-    Restaurant(name: "DeLucas", imageName: "DeLucasLogo", deal: "test Deal"),
+    Restaurant(name: "Bellisimo", imageName: "BellisimoLogo", deals: testDeal),
+    Restaurant(name: "BonfireBistro", imageName: "BonfireBistroLogo", deals: testDeal),
+    Restaurant(name: "Carne", imageName: "CarneLogo", deals: testDeal),
+    Restaurant(name: "Harth", imageName: "HarthLogo", deals: testDeal),
+    Restaurant(name: "InfernosBistro", imageName: "InfernosBistroLogo", deals: testDeal),
+    Restaurant(name: "Kevins", imageName: "KevinsLogo", deals: testDeal),
+    Restaurant(name: "Maximes", imageName: "MaximesLogo", deals: testDeal),
+    Restaurant(name: "MonaLisa", imageName: "MonaLisaLogo", deals: testDeal),
+    Restaurant(name: "OldSpaghettiFactory", imageName: "OldSpaghettiFactoryLogo", deals: testDeal),
+    Restaurant(name: "OliveGarden", imageName: "OliveGardenLogo", deals: testDeal),
+    Restaurant(name: "Paradise", imageName: "ParadiseLogo", deals: testDeal),
+    Restaurant(name: "Pasquales", imageName: "PasqualesLogo", deals: testDeal),
+    Restaurant(name: "Passero", imageName: "PasseroLogo", deals: testDeal),
+    Restaurant(name: "SantaLucia", imageName: "SantaLuciaLogo", deals: testDeal),
+    Restaurant(name: "TonyRoma", imageName: "TonyRomaLogo", deals: testDeal),
+    Restaurant(name: "DeLucas", imageName: "DeLucasLogo", deals: testDeal),
 
     
 ]
 
 var pizzaList = [
-    Restaurant(name: "BonfireBistro", imageName: "BonfireBistroLogo", deal: "test Deal"),
-    Restaurant(name: "BostonPizza", imageName: "BostonPizzaLogo", deal: "test Deal"),
-    Restaurant(name: "DalsRestaurant", imageName: "DalsRestaurantLogo", deal: "test Deal"),
-    Restaurant(name: "Dominos", imageName: "DominosLogo", deal: "test Deal"),
-    Restaurant(name: "GondolaPizza", imageName: "GondolaPizzaLogo", deal: "test Deal"),
-    Restaurant(name: "LittleCaesars", imageName: "LittleCaesarsLogo", deal: "test Deal"),
-    Restaurant(name: "MonaLisa", imageName: "MonaLisaLogo", deal: "test Deal"),
-    Restaurant(name: "NiakwaPizza", imageName: "NiakwaPizzaLogo", deal: "test Deal"),
-    Restaurant(name: "PapaJohns", imageName: "PapaJohnsLogo", deal: "test Deal"),
-    Restaurant(name: "Pasquales", imageName: "PasqualesLogo", deal: "test Deal"),
-    Restaurant(name: "PizzaHotline", imageName: "PizzaHotlineLogo", deal: "test Deal"),
-    Restaurant(name: "PizzaHut", imageName: "PizzaHutLogo", deal: "test Deal"),
-    Restaurant(name: "PizzaPizza", imageName: "PizzaPizzaLogo", deal: "test Deal"),
-    Restaurant(name: "PizzaPlace", imageName: "PizzaPlaceLogo", deal: "test Deal"),
-    Restaurant(name: "SantaLucia", imageName: "SantaLuciaLogo", deal: "test Deal"),
-    Restaurant(name: "DeLucas", imageName: "DeLucasLogo", deal: "test Deal"),
+    Restaurant(name: "BonfireBistro", imageName: "BonfireBistroLogo", deals: testDeal),
+    Restaurant(name: "BostonPizza", imageName: "BostonPizzaLogo", deals: testDeal),
+    Restaurant(name: "DalsRestaurant", imageName: "DalsRestaurantLogo", deals: testDeal),
+    Restaurant(name: "Dominos", imageName: "DominosLogo", deals: testDeal),
+    Restaurant(name: "GondolaPizza", imageName: "GondolaPizzaLogo", deals: testDeal),
+    Restaurant(name: "LittleCaesars", imageName: "LittleCaesarsLogo", deals: testDeal),
+    Restaurant(name: "MonaLisa", imageName: "MonaLisaLogo", deals: testDeal),
+    Restaurant(name: "NiakwaPizza", imageName: "NiakwaPizzaLogo", deals: testDeal),
+    Restaurant(name: "PapaJohns", imageName: "PapaJohnsLogo", deals: testDeal),
+    Restaurant(name: "Pasquales", imageName: "PasqualesLogo", deals: testDeal),
+    Restaurant(name: "PizzaHotline", imageName: "PizzaHotlineLogo", deals: testDeal),
+    Restaurant(name: "PizzaHut", imageName: "PizzaHutLogo", deals: testDeal),
+    Restaurant(name: "PizzaPizza", imageName: "PizzaPizzaLogo", deals: testDeal),
+    Restaurant(name: "PizzaPlace", imageName: "PizzaPlaceLogo", deals: testDeal),
+    Restaurant(name: "SantaLucia", imageName: "SantaLuciaLogo", deals: testDeal),
+    Restaurant(name: "DeLucas", imageName: "DeLucasLogo", deals: testDeal),
 
 ]
 
 var subAndSandwichList = [
-    Restaurant(name: "Bernsteins", imageName: "BernsteinsLogo", deal: "test Deal"),
-    Restaurant(name: "CalabriaMarket", imageName: "CalabriaMarketLogo", deal: "test Deal"),
-    Restaurant(name: "Chachis", imageName: "ChachisLogo", deal: "test Deal"),
-    Restaurant(name: "MrSub", imageName: "MrSubLogo", deal: "test Deal"),
-    Restaurant(name: "NathanDetroit", imageName: "NathanDetroitLogo", deal: "test Deal"),
-    Restaurant(name: "Nicks", imageName: "NicksLogo", deal: "test Deal"),
-    Restaurant(name: "SalisburyHouse", imageName: "SalisburyHouseLogo", deal: "test Deal"),
-    Restaurant(name: "Stellas", imageName: "StellasLogo", deal: "test Deal"),
-    Restaurant(name: "Subway", imageName: "SubwayLogo", deal: "test Deal"),
-    Restaurant(name: "TheFixx", imageName: "TheFixxLogo", deal: "test Deal"),
-    Restaurant(name: "TheGrove", imageName: "TheGroveLogo", deal: "test Deal"),
+    Restaurant(name: "Bernsteins", imageName: "BernsteinsLogo", deals: testDeal),
+    Restaurant(name: "CalabriaMarket", imageName: "CalabriaMarketLogo", deals: testDeal),
+    Restaurant(name: "Chachis", imageName: "ChachisLogo", deals: testDeal),
+    Restaurant(name: "MrSub", imageName: "MrSubLogo", deals: testDeal),
+    Restaurant(name: "NathanDetroit", imageName: "NathanDetroitLogo", deals: testDeal),
+    Restaurant(name: "Nicks", imageName: "NicksLogo", deals: testDeal),
+    Restaurant(name: "SalisburyHouse", imageName: "SalisburyHouseLogo", deals: testDeal),
+    Restaurant(name: "Stellas", imageName: "StellasLogo", deals: testDeal),
+    Restaurant(name: "Subway", imageName: "SubwayLogo", deals: testDeal),
+    Restaurant(name: "TheFixx", imageName: "TheFixxLogo", deals: testDeal),
+    Restaurant(name: "TheGrove", imageName: "TheGroveLogo", deals: testDeal),
 ]
 
 
