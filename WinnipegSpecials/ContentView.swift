@@ -16,7 +16,7 @@ struct ContentView_Previews: PreviewProvider {
 
 struct ContentView: View {
     var category: [Category] = categoryList
-
+    
     var body: some View {
         NavigationView {
             ScrollView(.vertical) {

@@ -19,13 +19,11 @@ struct DealCreationView: View {
         
     @State var days: [String] = ["Every day", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     @State var selections: [String] = []
-    
-//    @State private var selectedDayIndex = 0
-    
+        
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(spacing: 10){
-                List {
+            HStack{
+                List{
                     ForEach(self.days, id: \.self) { days in
                         MultipleSelectionRow(title: days, isSelected: self.selections.contains(days)) {
                             if self.selections.contains(days) {
@@ -37,7 +35,7 @@ struct DealCreationView: View {
                         }
                     }
                 }
-            }
+            }.frame(width: UIScreen.screenWidth, height: 350, alignment: .center)
             HStack{
                 TextField(
                     "Title",
@@ -45,7 +43,8 @@ struct DealCreationView: View {
                     .disableAutocorrection(false).frame(width: UIScreen.screenWidth*0.60)
                 TextField(
                     "Price",
-                    text: $price.value).keyboardType(.decimalPad).frame(width: UIScreen.screenWidth*0.20)
+                    text: $price.value).keyboardType(.decimalPad).frame(minWidth: 0,
+                                                                        maxWidth: .infinity)
                 
             }.textFieldStyle(RoundedBorderTextFieldStyle())
             
@@ -56,6 +55,26 @@ struct DealCreationView: View {
                     .disableAutocorrection(true)
             }
             .textFieldStyle(RoundedBorderTextFieldStyle())
+            
+            HStack(alignment: .center){
+                Button(action: {
+                        //Post to db here,
+                        print("test")
+                    
+                }){
+                    Text("Create!")
+                }.frame(width: 75, height: 25, alignment: .center)
+                
+                .foregroundColor(.white)
+                .background(Color(red: 74 / 255, green: 185 / 255, blue: 237 / 255))
+                .cornerRadius(16)
+                
+            }.frame(minWidth: 0,
+                     maxWidth: .infinity,
+                     minHeight: 0,
+                     maxHeight: .infinity,
+                     alignment: .top)
+            
         }.frame(minWidth: 0,
                     maxWidth: .infinity,
                     minHeight: 0,
@@ -64,7 +83,7 @@ struct DealCreationView: View {
             .navigationBarTitle(Text("Create A New Deal"), displayMode: .inline)
             
                 
-    }
+    } 
 }
 
 class NumbersOnly: ObservableObject {
