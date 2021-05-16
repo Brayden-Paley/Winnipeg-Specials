@@ -15,7 +15,7 @@ struct DealCreationView: View {
     
     @State var title: String = ""
     @State var description: String = ""
-    @ObservedObject  var price = NumbersOnly()
+    @ObservedObject var price = NumbersOnly()
     
     @State var everyday: Bool
     @State var monday: Bool
@@ -44,13 +44,7 @@ struct DealCreationView: View {
         guard let jsonData = try? jsonEncoder.encode(deal) else {
             return
         }
-        
-//        guard let httpBody = try? JSONSerialization.data(withJSONObject: deal, options: []) else {
-//                return
-//            }
-        
-        print(jsonData)
-        
+                
         request.httpBody = jsonData
         request.timeoutInterval = 20
         let session = URLSession.shared
@@ -172,7 +166,7 @@ struct DealCreationView: View {
 class NumbersOnly: ObservableObject {
     @Published var value = "" {
         didSet {
-            let filtered = value.filter { $0.isNumber }
+            let filtered = value.filter { $0.isNumber /*|| $0 == "."*/ }
             
             if value != filtered {
                 value = filtered

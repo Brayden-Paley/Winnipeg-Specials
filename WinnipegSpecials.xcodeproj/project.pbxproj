@@ -16,6 +16,7 @@
 		5195EFDC25C114A9001F08B3 /* WinnipegSpecialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5195EFDB25C114A9001F08B3 /* WinnipegSpecialsTests.swift */; };
 		5195EFE725C114A9001F08B3 /* WinnipegSpecialsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5195EFE625C114A9001F08B3 /* WinnipegSpecialsUITests.swift */; };
 		5195F00025C11B2C001F08B3 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5195EFFF25C11B2C001F08B3 /* Category.swift */; };
+		51B33AD02651B96E00E5276C /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B33ACF2651B96E00E5276C /* Auth.swift */; };
 		51BB2A9125C523BB00299819 /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BB2A9025C523BA00299819 /* Restaurant.swift */; };
 		51BB2A9E25CA6A5C00299819 /* ImageCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */; };
 		51F694FB2642346B00B5292B /* DealsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F694FA2642346B00B5292B /* DealsView.swift */; };
@@ -55,6 +56,7 @@
 		5195EFE625C114A9001F08B3 /* WinnipegSpecialsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinnipegSpecialsUITests.swift; sourceTree = "<group>"; };
 		5195EFE825C114A9001F08B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5195EFFF25C11B2C001F08B3 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		51B33ACF2651B96E00E5276C /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
 		51BB2A9025C523BA00299819 /* Restaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCarouselView.swift; sourceTree = "<group>"; };
 		51F694FA2642346B00B5292B /* DealsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealsView.swift; sourceTree = "<group>"; };
@@ -109,7 +111,7 @@
 		5195EFC825C114A8001F08B3 /* WinnipegSpecials */ = {
 			isa = PBXGroup;
 			children = (
-				5195EFC925C114A8001F08B3 /* WinnipegSpecialsApp.swift */,
+				51B33ACF2651B96E00E5276C /* Auth.swift */,
 				5195EFFF25C11B2C001F08B3 /* Category.swift */,
 				51F695022646022700B5292B /* Collapsible.swift */,
 				5168753A264EEE6B00E2ADAF /* Deal.swift */,
@@ -118,6 +120,7 @@
 				51BB2A9025C523BA00299819 /* Restaurant.swift */,
 				5195EFCB25C114A8001F08B3 /* ContentView.swift */,
 				51BB2A9D25CA6A5C00299819 /* ImageCarouselView.swift */,
+				5195EFC925C114A8001F08B3 /* WinnipegSpecialsApp.swift */,
 				5195EFCD25C114A9001F08B3 /* Assets.xcassets */,
 				5195EFD225C114A9001F08B3 /* Info.plist */,
 				5195EFCF25C114A9001F08B3 /* Preview Content */,
@@ -285,6 +288,7 @@
 				51F694FB2642346B00B5292B /* DealsView.swift in Sources */,
 				5195EFCC25C114A8001F08B3 /* ContentView.swift in Sources */,
 				5195EFCA25C114A8001F08B3 /* WinnipegSpecialsApp.swift in Sources */,
+				51B33AD02651B96E00E5276C /* Auth.swift in Sources */,
 				51BB2A9E25CA6A5C00299819 /* ImageCarouselView.swift in Sources */,
 				5195F00025C11B2C001F08B3 /* Category.swift in Sources */,
 				51F695032646022700B5292B /* Collapsible.swift in Sources */,

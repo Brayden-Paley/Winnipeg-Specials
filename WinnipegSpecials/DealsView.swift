@@ -14,6 +14,7 @@ struct DealsView: View {
     var deals: [Deal]
     @State var isActive = false
     
+    
     var body: some View {
         VStack(alignment: .leading){
             ScrollView {
@@ -158,7 +159,7 @@ struct DealsView: View {
                 }
             }
         }
-    }
+        }.animation(.easeOut)
     }
 }
 
@@ -171,14 +172,81 @@ extension UIScreen{
 struct DealCell: View {
     var deal: Deal
     var isActive = false
+    
+    func updateRating(deal: Deal){
+        guard let url = URL(string: "http://localhost:8080/api/v1/deal/" + deal.dealId) else {
+            print("Error in API endpoint call")
+            return
+        }
+        
+        print(url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+
+
+        
+        let jsonEncoder = JSONEncoder()
+        guard let jsonData = try? jsonEncoder.encode(deal) else {
+            return
+        }
+        
+        print(jsonData)
+        
+        request.httpBody = jsonData
+        request.timeoutInterval = 20
+        let session = URLSession.shared
+
+        session.dataTask(with: request) { (data, response, error) in
+                if let response = response {
+                    print(response)
+                }
+                if let data = data {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: data, options: [])
+                        print(json)
+                    } catch {
+                        print(error)
+                    }
+                }
+            }.resume()
+        
+    }
+    
+    func deleteDeal(deal: Deal){
+        guard let url = URL(string: "http://localhost:8080/api/v1/deal/" + deal.dealId) else {
+            print("Error in API endpoint call")
+            return
+        }
+        
+        print(url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+    
+        let session = URLSession.shared
+
+        session.dataTask(with: request) { (data, response, error) in
+                if let response = response {
+                    print(response)
+                } else {
+                    print("error in deleting deal")
+                }
+                
+            }.resume()
+        
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5){
             HStack{
                 Text(deal.title).fontWeight(.heavy).frame(width: UIScreen.screenWidth*0.60, alignment: .leading).padding(5)
                 Text("$" + String(deal.price)).frame(width: UIScreen.screenWidth*0.10, alignment: .leading)
                 Button(action: {
-                    //deal.rating = deal.rating + 1
-                    //has to update the backend eventually
+                    
+                    deal.rating = deal.rating + 1
+                    updateRating(deal: deal)
                 }) {
                     Image(systemName: "arrow.up").frame(width: UIScreen.screenWidth*0.10, alignment: .top)
                 }
@@ -189,8 +257,11 @@ struct DealCell: View {
                 //plus 8 in this section is hardcoded, would like to change to be % 
                 Text(deal.description).frame(width: (UIScreen.screenWidth*0.70) + 8, alignment: .leading).padding(5)
                 Button(action: {
-                    //deal.rating = deal.rating - 1
-                    //has to update the backend eventually
+                    deal.rating = deal.rating - 1
+                    updateRating(deal: deal)
+                    if(deal.rating <= -5){
+                        deleteDeal(deal: deal)
+                    }
                 }) {
                     Image(systemName: "arrow.down").frame(width: UIScreen.screenWidth*0.10, alignment: .top)
                 }
