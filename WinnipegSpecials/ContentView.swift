@@ -69,10 +69,10 @@ struct CategoryCell: View {
             Text(category.name).bold().font(.system(size: 20))
             ScrollView(.horizontal) {
                 HStack{
-                    ForEach(category.restaurants){ restaurant in
+                    ForEach(category.restaurants, id:\.name){ restaurant in
                         RestaurantCell(
                             name: restaurant.name,
-                            imageName: restaurant.imageName, restaurantDeals: restaurant.deals)
+                            imageName: restaurant.imageName, restaurant: restaurant)
                     }
                 }.frame(minWidth: 0,
                         maxWidth: .infinity,
@@ -87,11 +87,11 @@ struct CategoryCell: View {
 struct RestaurantCell: View {
     let name: String
     let imageName: String
-    let restaurantDeals: [Deal]
+    let restaurant: Restaurant
     
     var body: some View {
         
-        NavigationLink(destination: DealsView(restaurantName: name, deals: testDeal)) {
+        NavigationLink(destination: DealsView(restaurantName: name, restaurant: restaurant, deals: restaurant.deals)) {
             Image(imageName).resizable().frame(width: 80.0, height: 70.0).border(Color.black, width: 1)
         }
         .buttonStyle(PlainButtonStyle())

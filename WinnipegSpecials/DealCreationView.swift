@@ -13,12 +13,63 @@ import SwiftUI
 struct DealCreationView: View {
     var restaurantName: String
     
-    @State private var title: String = ""
-    @State private var description: String = ""
-    @ObservedObject private var price = NumbersOnly()
+    @State var title: String = ""
+    @State var description: String = ""
+    @ObservedObject  var price = NumbersOnly()
+    
+    @State var everyday: Bool
+    @State var monday: Bool
+    @State var tuesday: Bool
+    @State var wednesday: Bool
+    @State var thursday: Bool
+    @State var friday: Bool
+    @State var saturday: Bool
+    @State var sunday: Bool
+    
         
     @State var days: [String] = ["Every day", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     @State var selections: [String] = []
+    
+    func postDeal(deal: Deal){
+        guard let url = URL(string: "http://localhost:8080/api/v1/deal") else {
+            print("Error in API endpoint call")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+
+        
+        let jsonEncoder = JSONEncoder()
+        guard let jsonData = try? jsonEncoder.encode(deal) else {
+            return
+        }
+        
+//        guard let httpBody = try? JSONSerialization.data(withJSONObject: deal, options: []) else {
+//                return
+//            }
+        
+        print(jsonData)
+        
+        request.httpBody = jsonData
+        request.timeoutInterval = 20
+        let session = URLSession.shared
+
+        session.dataTask(with: request) { (data, response, error) in
+                if let response = response {
+                    print(response)
+                }
+                if let data = data {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: data, options: [])
+                        print(json)
+                    } catch {
+                        print(error)
+                    }
+                }
+            }.resume()
+        
+    }
         
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -58,9 +109,41 @@ struct DealCreationView: View {
             
             HStack(alignment: .center){
                 Button(action: {
-                        //Post to db here,
                         print("test")
+                    var everydaySelected = false
+                    for selection in selections{
+                        if (selection == "Monday"){
+                            self.monday = true
+                        } else if (selection == "Tuesday"){
+                            self.tuesday = true
+                        } else if (selection == "Wednesday"){
+                            self.wednesday = true
+                        } else if (selection == "Thursday"){
+                            self.thursday = true
+                        } else if (selection == "Friday"){
+                            self.friday = true
+                        } else if (selection == "Saturday"){
+                            self.saturday = true
+                        } else if (selection == "Sunday"){
+                            self.sunday = true
+                        }
+                        if(selection == "Every day"){
+                            everydaySelected = true
+                        }
+                    }
+                    if(everydaySelected){
+                        self.everyday = true
+                        self.monday = false
+                        self.tuesday = false
+                        self.wednesday = false
+                        self.thursday = false
+                        self.friday = false
+                        self.saturday = false
+                        self.sunday = false
+                    }
                     
+                    let newDeal = Deal(dealId: UUID().uuidString, restaurant: self.restaurantName, title: self.title, description: self.description, price: Int(self.price.value) ?? 0, rating: 0, everyday: self.everyday, monday: self.monday, tuesday: self.tuesday, wednesday: self.wednesday, thursday: self.thursday, friday: self.friday, saturday: self.saturday, sunday: self.sunday)
+                    postDeal(deal: newDeal)
                 }){
                     Text("Create!")
                 }.frame(width: 75, height: 25, alignment: .center)

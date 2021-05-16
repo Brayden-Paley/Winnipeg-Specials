@@ -10,21 +10,23 @@ import Foundation
 
 struct DealsView: View {
     var restaurantName: String
+    var restaurant: Restaurant
     var deals: [Deal]
     @State var isActive = false
     
     var body: some View {
-        VStack(alignment: .leading) {
-
+        VStack(alignment: .leading){
+            ScrollView {
+                
             Collapsible(
-                label: { Text("Everyday Deals").fontWeight(.heavy) },
+                label: { Text("Everyday Deals").fontWeight(.heavy)},
                 content: {
                     VStack(alignment: .leading, spacing: 15) {
-                        //for each Collapsible cell we will need to hit our API to check for deals, best to cache the deals eventually tho
-                        //hardcoded as deals[0] for now but should have SQL parameters that find based on the day + restaurant
-                        DealCell(deal: deals[0]).border(Color.black, width: 1)
-                        DealCell(deal: deals[1]).border(Color.black, width: 1)
-
+                        ForEach(restaurant.deals, id: \.dealId){ deal in
+                            if(deal.everyday){
+                                DealCell(deal: deal).border(Color.black, width: 1)
+                            }
+                        }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
@@ -32,71 +34,92 @@ struct DealsView: View {
             Collapsible(
                 label: { Text("Monday").fontWeight(.heavy) },
                 content: {
-                    HStack {
-                        Text("Content")
-                        Spacer()
+                    VStack(alignment: .leading, spacing: 15) {
+                        ForEach(restaurant.deals, id: \.dealId){ deal in
+                            if(deal.monday){
+                                DealCell(deal: deal).border(Color.black, width: 1)
+                            }
+                        }
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Tuesday").fontWeight(.heavy) },
                 content: {
-                    HStack {
-                        Text("Content")
-                        Spacer()
+                    VStack(alignment: .leading, spacing: 15) {
+                        ForEach(restaurant.deals, id: \.dealId){ deal in
+                            if(deal.tuesday){
+                                DealCell(deal: deal).border(Color.black, width: 1)
+                            }
+                        }
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Wednesday").fontWeight(.heavy) },
                 content: {
-                    HStack {
-                        Text("Content")
-                        Spacer()
+                    VStack(alignment: .leading, spacing: 15) {
+                        ForEach(restaurant.deals, id: \.dealId){ deal in
+                            if(deal.wednesday){
+                                DealCell(deal: deal).border(Color.black, width: 1)
+                            }
+                        }
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Thursday").fontWeight(.heavy) },
                 content: {
-                    HStack {
-                        Text("Content")
-                        Spacer()
+                    VStack(alignment: .leading, spacing: 15) {
+                        ForEach(restaurant.deals, id: \.dealId){ deal in
+                            if(deal.thursday){
+                                DealCell(deal: deal).border(Color.black, width: 1)
+                            }
+                        }
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Friday").fontWeight(.heavy) },
                 content: {
-                    HStack {
-                        Text("Content")
-                        Spacer()
+                    VStack(alignment: .leading, spacing: 15) {
+                        ForEach(restaurant.deals, id: \.dealId){ deal in
+                            if(deal.friday){
+                                DealCell(deal: deal).border(Color.black, width: 1)
+                            }
+                        }
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Saturday").fontWeight(.heavy) },
                 content: {
-                    HStack {
-                        Text("Content")
-                        Spacer()
+                    VStack(alignment: .leading, spacing: 15) {
+                        ForEach(restaurant.deals, id: \.dealId){ deal in
+                            if(deal.saturday){
+                                DealCell(deal: deal).border(Color.black, width: 1)
+                            }
+                        }
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 }).frame(maxWidth: .infinity)
             Collapsible(
                 label: { Text("Sunday").fontWeight(.heavy) },
                 content: {
-                    HStack {
-                        Text("Content")
-                        Spacer()
+                    VStack(alignment: .leading, spacing: 15) {
+                        ForEach(restaurant.deals, id: \.dealId){ deal in
+                            if(deal.sunday){
+                                DealCell(deal: deal).border(Color.black, width: 1)
+                            }
+                        }
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 }).frame(maxWidth: .infinity)
             
@@ -109,9 +132,14 @@ struct DealsView: View {
         maxHeight: .infinity,
         alignment: .topLeading)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear(perform: {
+                    print("here in deals view")
+                    restaurant.getDeals()})
         
         .background(
-        NavigationLink(destination: DealCreationView(restaurantName: restaurantName), isActive: $isActive,
+            NavigationLink(destination: DealCreationView(restaurantName: restaurantName, everyday: false, monday: false,
+                                                         tuesday: false, wednesday: false, thursday: false, friday: false,
+                                                         saturday: false, sunday: false), isActive: $isActive,
          label: { EmptyView() })
      )
      .navigationBarItems(trailing:
@@ -131,6 +159,7 @@ struct DealsView: View {
             }
         }
     }
+    }
 }
 
 extension UIScreen{
@@ -146,9 +175,9 @@ struct DealCell: View {
         VStack(alignment: .leading, spacing: 5){
             HStack{
                 Text(deal.title).fontWeight(.heavy).frame(width: UIScreen.screenWidth*0.60, alignment: .leading).padding(5)
-                Text("$" + deal.price).frame(width: UIScreen.screenWidth*0.10, alignment: .leading)
+                Text("$" + String(deal.price)).frame(width: UIScreen.screenWidth*0.10, alignment: .leading)
                 Button(action: {
-                    deal.rating = deal.rating + 1
+                    //deal.rating = deal.rating + 1
                     //has to update the backend eventually
                 }) {
                     Image(systemName: "arrow.up").frame(width: UIScreen.screenWidth*0.10, alignment: .top)
@@ -160,7 +189,7 @@ struct DealCell: View {
                 //plus 8 in this section is hardcoded, would like to change to be % 
                 Text(deal.description).frame(width: (UIScreen.screenWidth*0.70) + 8, alignment: .leading).padding(5)
                 Button(action: {
-                    deal.rating = deal.rating - 1
+                    //deal.rating = deal.rating - 1
                     //has to update the backend eventually
                 }) {
                     Image(systemName: "arrow.down").frame(width: UIScreen.screenWidth*0.10, alignment: .top)
@@ -172,9 +201,4 @@ struct DealCell: View {
 }
 
 
-struct Deal {
-    var title: String
-    var description: String
-    var price: String
-    @State var rating = 0
-}
+

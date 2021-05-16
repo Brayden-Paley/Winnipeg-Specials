@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5147113626474FAB007A11B2 /* DealCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5147113526474FAB007A11B2 /* DealCreationView.swift */; };
+		5168753B264EEE6B00E2ADAF /* Deal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5168753A264EEE6B00E2ADAF /* Deal.swift */; };
 		5195EFCA25C114A8001F08B3 /* WinnipegSpecialsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5195EFC925C114A8001F08B3 /* WinnipegSpecialsApp.swift */; };
 		5195EFCC25C114A8001F08B3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5195EFCB25C114A8001F08B3 /* ContentView.swift */; };
 		5195EFCE25C114A9001F08B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5195EFCD25C114A9001F08B3 /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		5147113526474FAB007A11B2 /* DealCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealCreationView.swift; sourceTree = "<group>"; };
+		5168753A264EEE6B00E2ADAF /* Deal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deal.swift; sourceTree = "<group>"; };
 		5195EFC625C114A8001F08B3 /* WinnipegSpecials.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WinnipegSpecials.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5195EFC925C114A8001F08B3 /* WinnipegSpecialsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinnipegSpecialsApp.swift; sourceTree = "<group>"; };
 		5195EFCB25C114A8001F08B3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				5195EFC925C114A8001F08B3 /* WinnipegSpecialsApp.swift */,
 				5195EFFF25C11B2C001F08B3 /* Category.swift */,
 				51F695022646022700B5292B /* Collapsible.swift */,
+				5168753A264EEE6B00E2ADAF /* Deal.swift */,
 				5147113526474FAB007A11B2 /* DealCreationView.swift */,
 				51F694FA2642346B00B5292B /* DealsView.swift */,
 				51BB2A9025C523BA00299819 /* Restaurant.swift */,
@@ -277,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5168753B264EEE6B00E2ADAF /* Deal.swift in Sources */,
 				51BB2A9125C523BB00299819 /* Restaurant.swift in Sources */,
 				51F694FB2642346B00B5292B /* DealsView.swift in Sources */,
 				5195EFCC25C114A8001F08B3 /* ContentView.swift in Sources */,
