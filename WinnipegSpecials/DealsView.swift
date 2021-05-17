@@ -172,6 +172,7 @@ extension UIScreen{
 struct DealCell: View {
     var deal: Deal
     var isActive = false
+    @State var auths: [Auth] = []
     
     func updateRating(deal: Deal){
         guard let url = URL(string: "http://localhost:8080/api/v1/deal/" + deal.dealId) else {
@@ -179,7 +180,6 @@ struct DealCell: View {
             return
         }
         
-        print(url)
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -213,13 +213,13 @@ struct DealCell: View {
         
     }
     
+    
     func deleteDeal(deal: Deal){
         guard let url = URL(string: "http://localhost:8080/api/v1/deal/" + deal.dealId) else {
             print("Error in API endpoint call")
             return
         }
         
-        print(url)
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -238,15 +238,96 @@ struct DealCell: View {
         
     }
     
+    
+    func canVote(deviceId: String,  completion: @escaping (Bool) -> ()){
+        var foundId: Bool = false
+        guard let url = URL(string: "http://localhost:8080/api/v1/auth/deal/"+deal.dealId) else {
+            print("Error in API endpoint call")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+                    
+                    if let data = data {
+                        do {
+                            
+                            let fetchedAuths = try JSONDecoder().decode([Auth].self, from: data)
+                            DispatchQueue.main.async {
+                                    for auth in fetchedAuths{
+                                        if(auth.deviceId == deviceId){
+                                            foundId = true
+                                        }
+                                    }
+                                completion(foundId)
+                                }
+                           
+                        } catch let jsonError as NSError {
+                            print("JSON decode failed: \(jsonError.localizedDescription)")
+                          }
+                        
+
+                            return
+                        }
+                }.resume()
+    }
+    
+    func postAuth(auth: Auth){
+        guard let url = URL(string: "http://localhost:8080/api/v1/auth") else {
+            print("Error in API endpoint call")
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+
+        
+        let jsonEncoder = JSONEncoder()
+        guard let jsonData = try? jsonEncoder.encode(auth) else {
+            return
+        }
+                
+        request.httpBody = jsonData
+        request.timeoutInterval = 20
+        let session = URLSession.shared
+
+        session.dataTask(with: request) { (data, response, error) in
+                if let response = response {
+                    print(response)
+                }
+                if let data = data {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: data, options: [])
+                        print(json)
+                    } catch {
+                        print(error)
+                    }
+                }
+            }.resume()
+        
+    }
+    
+    
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 5){
+            let uniqueDeviceId = UIDevice.current.identifierForVendor!.uuidString
             HStack{
                 Text(deal.title).fontWeight(.heavy).frame(width: UIScreen.screenWidth*0.60, alignment: .leading).padding(5)
                 Text("$" + String(deal.price)).frame(width: UIScreen.screenWidth*0.10, alignment: .leading)
                 Button(action: {
                     
-                    deal.rating = deal.rating + 1
-                    updateRating(deal: deal)
+                    canVote(deviceId: uniqueDeviceId, completion: { result in
+                        if(!result){
+                            print(result)
+                            deal.rating = deal.rating + 1
+                            updateRating(deal: deal)
+                            let deviceAuth = Auth(authId: UUID().uuidString, deviceId: uniqueDeviceId, dealId: deal.dealId)
+                            postAuth(auth: deviceAuth)
+                        }
+                    })
+                    
                 }) {
                     Image(systemName: "arrow.up").frame(width: UIScreen.screenWidth*0.10, alignment: .top)
                 }
@@ -256,12 +337,19 @@ struct DealCell: View {
             HStack(alignment: .top){
                 //plus 8 in this section is hardcoded, would like to change to be % 
                 Text(deal.description).frame(width: (UIScreen.screenWidth*0.70) + 8, alignment: .leading).padding(5)
+                
                 Button(action: {
-                    deal.rating = deal.rating - 1
-                    updateRating(deal: deal)
-                    if(deal.rating <= -5){
-                        deleteDeal(deal: deal)
-                    }
+                    canVote(deviceId: uniqueDeviceId, completion: { result in
+                        if(!result){
+                            deal.rating = deal.rating - 1
+                            updateRating(deal: deal)
+                            if(deal.rating <= -5){
+                                deleteDeal(deal: deal)
+                            }
+                            let deviceAuth = Auth(authId: UUID().uuidString, deviceId: uniqueDeviceId, dealId: deal.dealId)
+                            postAuth(auth: deviceAuth)
+                        }
+                    })
                 }) {
                     Image(systemName: "arrow.down").frame(width: UIScreen.screenWidth*0.10, alignment: .top)
                 }
