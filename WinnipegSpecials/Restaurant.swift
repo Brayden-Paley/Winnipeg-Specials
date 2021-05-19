@@ -21,8 +21,7 @@ class Restaurant: NSObject {
     }
     
     
-    
-    func getDeals(){
+    func getDeals(completion: @escaping () -> ()){
         let nameForUrl = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         guard let url = URL(string: "http://localhost:8080/api/v1/deal/restaurant/" + nameForUrl!) else {
             print("Error in API endpoint call")
@@ -37,6 +36,7 @@ class Restaurant: NSObject {
                             let fetchedDeals = try JSONDecoder().decode([Deal].self, from: data)
                                 DispatchQueue.main.async {
                                     self.deals = fetchedDeals
+                                    completion()
                                 }
                         } catch let jsonError as NSError {
                             print("JSON decode failed: \(jsonError.localizedDescription)")

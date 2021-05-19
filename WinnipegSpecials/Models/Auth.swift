@@ -12,11 +12,13 @@ class Auth: Codable {
     var authId: String
     var deviceId: String
     var dealId: String
+    var upvoted: Bool
     
-    init(authId: String, deviceId: String, dealId: String){
+    init(authId: String, deviceId: String, dealId: String, upvoted: Bool){
         self.authId = authId
         self.deviceId = deviceId
         self.dealId = dealId
+        self.upvoted = upvoted
     }
 }
 

@@ -13,9 +13,11 @@ import SwiftUI
 struct DealCreationView: View {
     var restaurantName: String
     
-    @State var title: String = ""
-    @State var description: String = ""
+    //@State var title: String = ""
+    //@State var description: String = ""
     @ObservedObject var price = NumbersOnly()
+    @ObservedObject var textBindingManagerTitle = TextBindingManager(limit: 25)
+    @ObservedObject var textBindingManagerDescription = TextBindingManager(limit: 50)
     
     @State var everyday: Bool
     @State var monday: Bool
@@ -29,6 +31,8 @@ struct DealCreationView: View {
         
     @State var days: [String] = ["Every day", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     @State var selections: [String] = []
+    
+    @State var showAlert = false
     
     func postDeal(deal: Deal){
         guard let url = URL(string: "http://localhost:8080/api/v1/deal") else {
@@ -84,7 +88,7 @@ struct DealCreationView: View {
             HStack{
                 TextField(
                     "Title",
-                     text: $title)
+                    text: $textBindingManagerTitle.text)
                     .disableAutocorrection(false).frame(width: UIScreen.screenWidth*0.60)
                 TextField(
                     "Price",
@@ -96,48 +100,52 @@ struct DealCreationView: View {
             HStack{
                 TextField(
                     "Description",
-                    text: $description)
+                    text: $textBindingManagerDescription.text)
                     .disableAutocorrection(true)
             }
             .textFieldStyle(RoundedBorderTextFieldStyle())
             
             HStack(alignment: .center){
                 Button(action: {
-                        print("test")
-                    var everydaySelected = false
-                    for selection in selections{
-                        if (selection == "Monday"){
-                            self.monday = true
-                        } else if (selection == "Tuesday"){
-                            self.tuesday = true
-                        } else if (selection == "Wednesday"){
-                            self.wednesday = true
-                        } else if (selection == "Thursday"){
-                            self.thursday = true
-                        } else if (selection == "Friday"){
-                            self.friday = true
-                        } else if (selection == "Saturday"){
-                            self.saturday = true
-                        } else if (selection == "Sunday"){
-                            self.sunday = true
+                    if(selections.count > 0 && !textBindingManagerTitle.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty && !textBindingManagerDescription.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty && !price.value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty){
+                        var everydaySelected = false
+                        for selection in selections{
+                            if (selection == "Monday"){
+                                self.monday = true
+                            } else if (selection == "Tuesday"){
+                                self.tuesday = true
+                            } else if (selection == "Wednesday"){
+                                self.wednesday = true
+                            } else if (selection == "Thursday"){
+                                self.thursday = true
+                            } else if (selection == "Friday"){
+                                self.friday = true
+                            } else if (selection == "Saturday"){
+                                self.saturday = true
+                            } else if (selection == "Sunday"){
+                                self.sunday = true
+                            }
+                            if(selection == "Every day"){
+                                everydaySelected = true
+                            }
                         }
-                        if(selection == "Every day"){
-                            everydaySelected = true
+                        if(everydaySelected){
+                            self.everyday = true
+                            self.monday = false
+                            self.tuesday = false
+                            self.wednesday = false
+                            self.thursday = false
+                            self.friday = false
+                            self.saturday = false
+                            self.sunday = false
                         }
-                    }
-                    if(everydaySelected){
-                        self.everyday = true
-                        self.monday = false
-                        self.tuesday = false
-                        self.wednesday = false
-                        self.thursday = false
-                        self.friday = false
-                        self.saturday = false
-                        self.sunday = false
+                        
+                        let newDeal = Deal(dealId: UUID().uuidString, restaurant: self.restaurantName, title: self.textBindingManagerTitle.text, description: self.textBindingManagerDescription.text, price: Int(self.price.value) ?? 0, rating: 0, everyday: self.everyday, monday: self.monday, tuesday: self.tuesday, wednesday: self.wednesday, thursday: self.thursday, friday: self.friday, saturday: self.saturday, sunday: self.sunday)
+                        postDeal(deal: newDeal)
+                    } else {
+                        showAlert = true
                     }
                     
-                    let newDeal = Deal(dealId: UUID().uuidString, restaurant: self.restaurantName, title: self.title, description: self.description, price: Int(self.price.value) ?? 0, rating: 0, everyday: self.everyday, monday: self.monday, tuesday: self.tuesday, wednesday: self.wednesday, thursday: self.thursday, friday: self.friday, saturday: self.saturday, sunday: self.sunday)
-                    postDeal(deal: newDeal)
                 }){
                     Text("Create!")
                 }.frame(width: 75, height: 25, alignment: .center)
@@ -158,9 +166,14 @@ struct DealCreationView: View {
                     maxHeight: .infinity,
                     alignment: .topLeading).padding(15)
             .navigationBarTitle(Text("Create A New Deal"), displayMode: .inline)
+        .alert(isPresented: $showAlert) {
+        Alert(
+            title: Text("Please select values for all fields")
+        )
+    }
             
                 
-    } 
+    }
 }
 
 class NumbersOnly: ObservableObject {
@@ -172,6 +185,21 @@ class NumbersOnly: ObservableObject {
                 value = filtered
             }
         }
+    }
+}
+
+class TextBindingManager: ObservableObject {
+    @Published var text: String = "" {
+        didSet {
+            if text.count > characterLimit && oldValue.count <= characterLimit {
+                text = oldValue
+            }
+        }
+    }
+    let characterLimit: Int
+
+    init(limit: Int){
+        characterLimit = limit
     }
 }
 

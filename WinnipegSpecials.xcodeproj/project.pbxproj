@@ -111,10 +111,9 @@
 		5195EFC825C114A8001F08B3 /* WinnipegSpecials */ = {
 			isa = PBXGroup;
 			children = (
-				51B33ACF2651B96E00E5276C /* Auth.swift */,
+				51EA1FD32655BCEF006E8557 /* Models */,
 				5195EFFF25C11B2C001F08B3 /* Category.swift */,
 				51F695022646022700B5292B /* Collapsible.swift */,
-				5168753A264EEE6B00E2ADAF /* Deal.swift */,
 				5147113526474FAB007A11B2 /* DealCreationView.swift */,
 				51F694FA2642346B00B5292B /* DealsView.swift */,
 				51BB2A9025C523BA00299819 /* Restaurant.swift */,
@@ -152,6 +151,15 @@
 				5195EFE825C114A9001F08B3 /* Info.plist */,
 			);
 			path = WinnipegSpecialsUITests;
+			sourceTree = "<group>";
+		};
+		51EA1FD32655BCEF006E8557 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				5168753A264EEE6B00E2ADAF /* Deal.swift */,
+				51B33ACF2651B96E00E5276C /* Auth.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
