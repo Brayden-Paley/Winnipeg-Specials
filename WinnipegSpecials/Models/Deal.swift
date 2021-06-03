@@ -13,7 +13,7 @@ class Deal: Codable {
     var restaurant: String
     var title: String
     var description: String
-    var price: Int
+    var price: String
     var rating: Int
     var everyday: Bool
     var monday: Bool
@@ -24,7 +24,7 @@ class Deal: Codable {
     var saturday: Bool
     var sunday: Bool
     
-    init(dealId: String, restaurant: String, title: String, description: String, price: Int, rating: Int, everyday: Bool, monday: Bool, tuesday: Bool, wednesday: Bool, thursday: Bool, friday: Bool, saturday: Bool, sunday: Bool){
+    init(dealId: String, restaurant: String, title: String, description: String, price: String, rating: Int, everyday: Bool, monday: Bool, tuesday: Bool, wednesday: Bool, thursday: Bool, friday: Bool, saturday: Bool, sunday: Bool){
         self.dealId = dealId
         self.restaurant = restaurant
         self.title = title

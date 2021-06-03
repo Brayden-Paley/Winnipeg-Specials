@@ -8,34 +8,67 @@
 import Foundation
 import SwiftUI
 
+import Combine
+import UIKit
 
 
-struct DealCreationView: View {
+/// Publisher to read keyboard changes.
+protocol KeyboardReadable {
+    var keyboardPublisher: AnyPublisher<Bool, Never> { get }
+}
+
+extension KeyboardReadable {
+    var keyboardPublisher: AnyPublisher<Bool, Never> {
+        Publishers.Merge(
+            NotificationCenter.default
+                .publisher(for: UIResponder.keyboardWillShowNotification)
+                .map { _ in true },
+            
+            NotificationCenter.default
+                .publisher(for: UIResponder.keyboardWillHideNotification)
+                .map { _ in false }
+        )
+        .eraseToAnyPublisher()
+    }
+}
+
+
+
+struct DealCreationView: View , KeyboardReadable{
     var restaurantName: String
-    
     //@State var title: String = ""
     //@State var description: String = ""
     @ObservedObject var price = NumbersOnly()
     @ObservedObject var textBindingManagerTitle = TextBindingManager(limit: 25)
     @ObservedObject var textBindingManagerDescription = TextBindingManager(limit: 50)
+    @Environment(\.presentationMode) var presentationMode
     
-    @State var everyday: Bool
-    @State var monday: Bool
-    @State var tuesday: Bool
-    @State var wednesday: Bool
-    @State var thursday: Bool
-    @State var friday: Bool
-    @State var saturday: Bool
-    @State var sunday: Bool
+    @State var everyday: Bool = false
+    @State var monday: Bool = false
+    @State var tuesday: Bool = false
+    @State var wednesday: Bool = false
+    @State var thursday: Bool = false
+    @State var friday: Bool = false
+    @State var saturday: Bool = false
+    @State var sunday: Bool = false
     
         
     @State var days: [String] = ["Every day", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     @State var selections: [String] = []
     
-    @State var showAlert = false
+    @State var showErrorAlert = false
+    @State var showConfirmationAlert = false
+    
+    @State var isKeyboardVisible = false
+    
+    let rowHeight = CGFloat(UIScreen.screenHeight*0.05)
+    
+    //let keyboardShow = NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+    //let keyboardHide = NotificationCenter.default.publisher(for: UIResponder.keyboardDidHideNotification)
+    
     
     func postDeal(deal: Deal){
-        guard let url = URL(string: "http://localhost:8080/api/v1/deal") else {
+        guard let url = URL(string: "http://hotspotmysql-env.eba-2fmrzipg.us-east-2.elasticbeanstalk.com/api/v1/deal") else {
             print("Error in API endpoint call")
             return
         }
@@ -68,118 +101,165 @@ struct DealCreationView: View {
             }.resume()
         
     }
+    
+    init(restaurantName: String){
+        self.restaurantName = restaurantName
+            UITableView.appearance().backgroundColor =  UIColor(hex: "#e2e2e2ff")
+        }
         
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack{
-                List{
-                    ForEach(self.days, id: \.self) { days in
-                        MultipleSelectionRow(title: days, isSelected: self.selections.contains(days)) {
-                            if self.selections.contains(days) {
-                                self.selections.removeAll(where: { $0 == days })
-                            }
-                            else {
-                                self.selections.append(days)
-                            }
-                        }
-                    }
-                }
-            }.frame(width: UIScreen.screenWidth, height: 350, alignment: .center)
-            HStack{
-                TextField(
-                    "Title",
-                    text: $textBindingManagerTitle.text)
-                    .disableAutocorrection(false).frame(width: UIScreen.screenWidth*0.60)
-                TextField(
-                    "Price",
-                    text: $price.value).keyboardType(.decimalPad).frame(minWidth: 0,
-                                                                        maxWidth: .infinity)
-                
-            }.textFieldStyle(RoundedBorderTextFieldStyle())
-            
-            HStack{
-                TextField(
-                    "Description",
-                    text: $textBindingManagerDescription.text)
-                    .disableAutocorrection(true)
+        ZStack{
+            Color(hex: 0xe2e2e2).edgesIgnoringSafeArea(.all)
+            Background{
             }
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-            
-            HStack(alignment: .center){
-                Button(action: {
-                    if(selections.count > 0 && !textBindingManagerTitle.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty && !textBindingManagerDescription.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty && !price.value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty){
-                        var everydaySelected = false
-                        for selection in selections{
-                            if (selection == "Monday"){
-                                self.monday = true
-                            } else if (selection == "Tuesday"){
-                                self.tuesday = true
-                            } else if (selection == "Wednesday"){
-                                self.wednesday = true
-                            } else if (selection == "Thursday"){
-                                self.thursday = true
-                            } else if (selection == "Friday"){
-                                self.friday = true
-                            } else if (selection == "Saturday"){
-                                self.saturday = true
-                            } else if (selection == "Sunday"){
-                                self.sunday = true
+            .zIndex(isKeyboardVisible ? 1 : 0).opacity(0.00001)
+            .onReceive(keyboardPublisher) { newIsKeyboardVisible in
+                 isKeyboardVisible = newIsKeyboardVisible
+     //            backgroundView.opacity(isKeyboardVisible ? 0 : 1)
+             }.onTapGesture {
+                 UIApplication.shared.endEditing()
+             }
+            VStack(alignment: .leading, spacing: 10) {
+                /*HStack{
+                    Text("Select all days that apply")
+                }.frame(width: UIScreen.screenWidth, height: 60, alignment: .leading).padding(.top)*/
+                HStack{
+                    List{
+                        Section(header: ListHeader()){
+                            ForEach(self.days, id: \.self) { days in
+                                MultipleSelectionRow(title: days, isSelected: self.selections.contains(days)) {
+                                    if self.selections.contains(days) {
+                                        self.selections.removeAll(where: { $0 == days })
+                                    }
+                                    else {
+                                        self.selections.append(days)
+                                    }
+                                }
+                                .alert(isPresented: $showErrorAlert) {
+                                    Alert(
+                                        title: Text("Please select values for all fields")
+                                    )
+                                    
+                                }
+                            }.listRowBackground(Color(hex: 0xe2e2e2))
+                        }.textCase(nil)
+                    }
+                    .environment(\.defaultMinListRowHeight, rowHeight)
+                    .frame(height: days.reduce(rowHeight*2) { i, _ in i + rowHeight})
+                    //.frame(width: UIScreen.screenWidth, alignment: .center).listRowBackground(Color(hex: 0xe2e2e2))
+                    //.frame(height: geometry.size.height, alignment: .center).listRowBackground(Color(hex: 0xe2e2e2))
+                }.listStyle(PlainListStyle())
+                .background(Color(hex: 0xe2e2e2))
+                HStack{
+                    TextField(
+                        "Title",
+                        text: $textBindingManagerTitle.text)
+                        .disableAutocorrection(false).frame(width: UIScreen.screenWidth*0.60)
+                    TextField(
+                        "Price",
+                        text: $price.value).keyboardType(.decimalPad).frame(width: UIScreen.screenWidth*0.30)
+                    
+                }.textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                HStack{
+                    TextField(
+                        "Description",
+                        text: $textBindingManagerDescription.text)
+                        .disableAutocorrection(true).frame(width: UIScreen.screenWidth*0.921)
+                }
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                HStack(){
+                    Button(action: {
+                        if(selections.count > 0 && !textBindingManagerTitle.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty && !textBindingManagerDescription.text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty && !price.value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty){
+                            var everydaySelected = false
+                            for selection in selections{
+                                if (selection == "Monday"){
+                                    self.monday = true
+                                } else if (selection == "Tuesday"){
+                                    self.tuesday = true
+                                } else if (selection == "Wednesday"){
+                                    self.wednesday = true
+                                } else if (selection == "Thursday"){
+                                    self.thursday = true
+                                } else if (selection == "Friday"){
+                                    self.friday = true
+                                } else if (selection == "Saturday"){
+                                    self.saturday = true
+                                } else if (selection == "Sunday"){
+                                    self.sunday = true
+                                }
+                                if(selection == "Every day"){
+                                    everydaySelected = true
+                                }
                             }
-                            if(selection == "Every day"){
-                                everydaySelected = true
+                            if(everydaySelected){
+                                self.everyday = true
+                                self.monday = false
+                                self.tuesday = false
+                                self.wednesday = false
+                                self.thursday = false
+                                self.friday = false
+                                self.saturday = false
+                                self.sunday = false
+                            } else if(!everydaySelected && self.monday && self.tuesday && self.wednesday && self.thursday && self.friday && self.saturday && self.sunday){
+                                self.everyday = true
+                                self.monday = false
+                                self.tuesday = false
+                                self.wednesday = false
+                                self.thursday = false
+                                self.friday = false
+                                self.saturday = false
+                                self.sunday = false
                             }
-                        }
-                        if(everydaySelected){
-                            self.everyday = true
-                            self.monday = false
-                            self.tuesday = false
-                            self.wednesday = false
-                            self.thursday = false
-                            self.friday = false
-                            self.saturday = false
-                            self.sunday = false
+                            
+                            let newDeal = Deal(dealId: UUID().uuidString, restaurant: self.restaurantName, title: self.textBindingManagerTitle.text, description: self.textBindingManagerDescription.text, price: self.price.value, rating: 0, everyday: self.everyday, monday: self.monday, tuesday: self.tuesday, wednesday: self.wednesday, thursday: self.thursday, friday: self.friday, saturday: self.saturday, sunday: self.sunday)
+                            postDeal(deal: newDeal)
+                            showConfirmationAlert = true
+                        } else {
+                            showErrorAlert = true
                         }
                         
-                        let newDeal = Deal(dealId: UUID().uuidString, restaurant: self.restaurantName, title: self.textBindingManagerTitle.text, description: self.textBindingManagerDescription.text, price: Int(self.price.value) ?? 0, rating: 0, everyday: self.everyday, monday: self.monday, tuesday: self.tuesday, wednesday: self.wednesday, thursday: self.thursday, friday: self.friday, saturday: self.saturday, sunday: self.sunday)
-                        postDeal(deal: newDeal)
-                    } else {
-                        showAlert = true
-                    }
+                    }){
+                        Text("Create!")
+                    }.frame(width: 75, height: 25, alignment: .center)
+                    .foregroundColor(.white)
+                    .background(Color(red: 74 / 255, green: 185 / 255, blue: 237 / 255))
+                    .cornerRadius(16)
+                    .zIndex(2)
                     
-                }){
-                    Text("Create!")
-                }.frame(width: 75, height: 25, alignment: .center)
+                }.frame(minWidth: 0,
+                         maxWidth: .infinity,
+                         minHeight: 0,
+                         maxHeight: .infinity,
+                         alignment: .top)
+                .background(Color(hex: 0xe2e2e2))
                 
-                .foregroundColor(.white)
-                .background(Color(red: 74 / 255, green: 185 / 255, blue: 237 / 255))
-                .cornerRadius(16)
                 
             }.frame(minWidth: 0,
-                     maxWidth: .infinity,
-                     minHeight: 0,
-                     maxHeight: .infinity,
-                     alignment: .top)
+                        maxWidth: .infinity,
+                        minHeight: 0,
+                        maxHeight: .infinity,
+                        alignment: .topLeading).padding(15)
+                .navigationBarTitle(Text("Create A New Deal"), displayMode: .inline)
             
-        }.frame(minWidth: 0,
-                    maxWidth: .infinity,
-                    minHeight: 0,
-                    maxHeight: .infinity,
-                    alignment: .topLeading).padding(15)
-            .navigationBarTitle(Text("Create A New Deal"), displayMode: .inline)
-        .alert(isPresented: $showAlert) {
-        Alert(
-            title: Text("Please select values for all fields")
-        )
-    }
-            
-                
+            .alert(isPresented: $showConfirmationAlert){
+                Alert(
+                    title: Text("Deal Created!"), dismissButton: .default(Text("Thank you!")) {
+                        textBindingManagerTitle.text = ""
+                        textBindingManagerDescription.text = ""
+                        price.value = ""
+                        presentationMode.wrappedValue.dismiss()
+                    }
+            )}.background(Color(hex: 0xe2e2e2)).edgesIgnoringSafeArea(.bottom)
+        }
     }
 }
 
 class NumbersOnly: ObservableObject {
     @Published var value = "" {
         didSet {
-            let filtered = value.filter { $0.isNumber /*|| $0 == "."*/ }
+            let filtered = value.filter { $0.isNumber || $0 == "." }
             
             if value != filtered {
                 value = filtered
@@ -217,6 +297,53 @@ struct MultipleSelectionRow: View {
                     Image(systemName: "checkmark")
                 }
             }
+        }
+    }
+}
+
+//extension View {
+//  func endTextEditing() {
+//    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+//                                    to: nil, from: nil, for: nil)
+//  }
+//}
+
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+
+struct Background<Content: View>: View {
+    private var content: Content
+
+    init(@ViewBuilder content: @escaping () -> Content) {
+        self.content = content()
+    }
+
+    var body: some View {
+        Color.white
+        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        .overlay(content)
+    }
+}
+
+//extension View {
+//    @ViewBuilder func isHidden(_ hidden: Bool, remove: Bool = false) -> some View {
+//        if hidden {
+//            if !remove {
+//                self.hidden()
+//            }
+//        } else {
+//            self
+//        }
+//    }
+//}
+
+struct ListHeader: View {
+    var body: some View {
+        HStack {
+            Text("Select all days that apply")
         }
     }
 }

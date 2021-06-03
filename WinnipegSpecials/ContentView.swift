@@ -7,9 +7,9 @@
 import SwiftUI
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
+        static var previews: some View {
         Group {
-            ContentView(category: categoryList)
+            ContentView()
         }
     }
 }
@@ -25,9 +25,42 @@ extension Color {
         )
     }
 }
+extension UIColor {
+    public convenience init?(hex: String) {
+        let r, g, b, a: CGFloat
+
+        if hex.hasPrefix("#") {
+            let start = hex.index(hex.startIndex, offsetBy: 1)
+            let hexColor = String(hex[start...])
+
+            if hexColor.count == 8 {
+                let scanner = Scanner(string: hexColor)
+                var hexNumber: UInt64 = 0
+
+                if scanner.scanHexInt64(&hexNumber) {
+                    r = CGFloat((hexNumber & 0xff000000) >> 24) / 255
+                    g = CGFloat((hexNumber & 0x00ff0000) >> 16) / 255
+                    b = CGFloat((hexNumber & 0x0000ff00) >> 8) / 255
+                    a = CGFloat(hexNumber & 0x000000ff) / 255
+
+                    self.init(red: r, green: g, blue: b, alpha: a)
+                    return
+                }
+            }
+        }
+
+        return nil
+    }
+}
+
+
 
 struct ContentView: View {
     var category: [Category] = categoryList
+    init() {
+        UINavigationBar.appearance().barTintColor = UIColor(hex: "#e06c36ff")
+
+    }
     
     var body: some View {
         NavigationView {
@@ -35,24 +68,26 @@ struct ContentView: View {
                 VStack {
                     GeometryReader { geometry in
                         ImageCarouselView(numberOfImages: 3) {
-                            Image("EarlsLogo")
+                            Image("BrazenHallLogo")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: geometry.size.width, height: geometry.size.height)
-                                .clipped()
-                            Image("PizzaHotlineLogo")
+                                .clipped().padding(.top, 75)
+                            Image("JoeyLogo")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: geometry.size.width, height: geometry.size.height)
-                                .clipped()
-                            Image("EarlsLogo")
+                                .clipped().padding(.top, 75)
+                            Image("icon1024")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: geometry.size.width, height: geometry.size.height)
-                                .clipped()
+                                .clipped().padding(.top, 75)
                         }
-                    }.frame(height: 200, alignment: .top)
+                    }.frame(height: 200, alignment: .top).ignoresSafeArea().background(Color(hex: 0xe06c36))
                     
+                    Spacer()
+                        .frame(height: 50)
                     
                     VStack(alignment: .leading, spacing: 20.0) {
                         ForEach(category){ category in
@@ -60,54 +95,21 @@ struct ContentView: View {
                         }
                         .navigationBarTitle("")
                         .navigationBarHidden(true)
-                    }.padding(.leading, 10).padding(.top, 15)
+                    }.padding(.leading, 10).padding(.top, 15).padding(.bottom, 20)
                     .frame(minWidth: 0,
                            maxWidth: .infinity,
                            minHeight: 0,
                            maxHeight: .infinity,
                            alignment: .topLeading)
+                    .overlay(Divider().frame(height: 2).background(Color.black), alignment: .top)
+                    .ignoresSafeArea().background(Color(hex: /*0x00a4cc*/0x78b1e3)).edgesIgnoringSafeArea(.bottom)
                     
                 }.navigationBarHidden(true)
-            }.background(Color(hex: 0xDAAD86))
+            }.background(Color(hex: 0xe06c36)).ignoresSafeArea()
         }
+
     }
 }
 
 
 
-
-struct CategoryCell: View {
-    let category: Category
-    var body: some View {
-        VStack(alignment: .leading){
-            Text(category.name).bold().font(.system(size: 20))
-            ScrollView(.horizontal) {
-                HStack{
-                    ForEach(category.restaurants, id:\.name){ restaurant in
-                        RestaurantCell(
-                            name: restaurant.name,
-                            imageName: restaurant.imageName, restaurant: restaurant)
-                    }
-                }.frame(minWidth: 0,
-                        maxWidth: .infinity,
-                        minHeight: 0,
-                        maxHeight: .infinity,
-                        alignment: .leading)
-            }
-        }
-    }
-}
-
-struct RestaurantCell: View {
-    let name: String
-    let imageName: String
-    let restaurant: Restaurant
-    
-    var body: some View {
-        
-        NavigationLink(destination: DealsView(restaurantName: name, restaurant: restaurant, deals: restaurant.deals)) {
-            Image(imageName).resizable().frame(width: 80.0, height: 70.0).border(Color.black, width: 1)
-        }
-        .buttonStyle(PlainButtonStyle())
-    }
-}
