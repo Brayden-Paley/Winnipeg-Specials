@@ -138,7 +138,6 @@ struct DealsView: View {
         alignment: .topLeading)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(perform: {
-                    print("here in deals view")
             restaurant.getDeals(){
                 sortDealsOnRating()
             }

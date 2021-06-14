@@ -38,7 +38,7 @@ struct DealCreationView: View , KeyboardReadable{
     var restaurantName: String
     //@State var title: String = ""
     //@State var description: String = ""
-    @ObservedObject var price = NumbersOnly()
+    @ObservedObject var price = NumbersOnly(limit: 5)
     @ObservedObject var textBindingManagerTitle = TextBindingManager(limit: 25)
     @ObservedObject var textBindingManagerDescription = TextBindingManager(limit: 50)
     @Environment(\.presentationMode) var presentationMode
@@ -264,7 +264,15 @@ class NumbersOnly: ObservableObject {
             if value != filtered {
                 value = filtered
             }
+            if value.count > characterLimit && oldValue.count <= characterLimit {
+                value = oldValue
+            }
         }
+    }
+    let characterLimit: Int
+
+    init(limit: Int){
+        characterLimit = limit
     }
 }
 

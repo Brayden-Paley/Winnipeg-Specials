@@ -244,8 +244,8 @@ struct DealCell: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 5){
             HStack{
-                Text(deal.title).fontWeight(.heavy).frame(width: UIScreen.screenWidth*0.55, alignment: .leading).padding(5)
-                Text("$" + String(deal.price)).frame(width: UIScreen.screenWidth*0.15, alignment: .trailing)
+                Text(deal.title).fontWeight(.heavy).frame(width: UIScreen.screenWidth*0.52, alignment: .leading).padding(5)
+                Text("$" + String(deal.price)).frame(width: UIScreen.screenWidth*0.18, alignment: .trailing)
                 Button(action: {
                     
                     canVote(deviceId: uniqueDeviceId, upvoted: true, completion: { result, auth in
