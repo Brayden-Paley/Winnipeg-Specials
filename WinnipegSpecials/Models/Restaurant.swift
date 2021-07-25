@@ -106,9 +106,8 @@ var drinkList = [
 var mexicanList = [
     Restaurant(name: "BMC", imageName: "BMCLogo", deals: []),
     Restaurant(name: "Burrito Del Rio", imageName: "BurritoDelRioLogo", deals: []),
-    Restaurant(name: "Burrito Splendido", imageName: "BurritoSpendidoLogo", deals: []),
+    //Restaurant(name: "Burrito Splendido", imageName: "BurritoSpendidoLogo", deals: []),
     Restaurant(name: "Carlos & Murphys", imageName: "Carlos&MurphysLogo", deals: []),
-    Restaurant(name: "JCs Taco", imageName: "JCsTacoLogo", deals: []),
     Restaurant(name: "LaCarnita", imageName: "LaCarnitaLogo", deals: []),
     Restaurant(name: "LaRoca", imageName: "LaRocaLogo", deals: []),
     Restaurant(name: "Mama Joes", imageName: "MamaJoesLogo", deals: []),
@@ -118,6 +117,7 @@ var mexicanList = [
     Restaurant(name: "Taco Bell", imageName: "TacoBellLogo", deals: []),
     Restaurant(name: "Taco Del Mar", imageName: "TacoDelMarLogo", deals: []),
     Restaurant(name: "Taco Time", imageName: "TacoTimeLogo", deals: []),
+    Restaurant(name: "JCs Taco", imageName: "JCsTacoLogo", deals: []),
 ]
 
 var pastaList = [

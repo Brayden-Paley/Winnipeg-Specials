@@ -14,9 +14,10 @@ struct DealCell: View {
     @State var auths: [Auth] = []
     @State var upvote = false
     @State var downvote = false
+    @State var reportDeal = false
     let uniqueDeviceId = UIDevice.current.identifierForVendor!.uuidString
     
-    func updateRating(deal: Deal){
+    func updateDeal(deal: Deal){
         guard let url = URL(string: "http://hotspotmysql-env.eba-2fmrzipg.us-east-2.elasticbeanstalk.com/api/v1/deal/" + deal.dealId) else {
             print("Error in API endpoint call")
             return
@@ -51,6 +52,44 @@ struct DealCell: View {
                 }
             }.resume()
         
+    }
+    
+    //check if user is banned
+    func isBanned(deviceId: String, completion: @escaping (Bool) -> ()){
+        guard let url = URL(string: "http://hotspotmysql-env.eba-2fmrzipg.us-east-2.elasticbeanstalk.com/api/v1/banned/") else {
+            print("Error in API endpoint call")
+            return
+        }
+        var foundBannedId = false
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+                    
+                    if let data = data {
+                        do {
+                            let fetchedBanned = try JSONDecoder().decode([Banned].self, from: data)
+                            DispatchQueue.main.async {
+                                    for banned in fetchedBanned{
+                                        if(banned.deviceId == deviceId){
+                                            foundBannedId = true
+                                        }
+                                    }
+                                completion(foundBannedId)
+        
+                           
+                            }
+                        } catch let jsonError as NSError {
+                            print("JSON decode failed: \(jsonError.localizedDescription)")
+                          }
+                        
+
+                            return
+                        }
+            
+                }.resume()
     }
     
     func updateAuth(auth: Auth){
@@ -131,7 +170,6 @@ struct DealCell: View {
                     
                     if let data = data {
                         do {
-                            
                             let fetchedAuths = try JSONDecoder().decode([Auth].self, from: data)
                             DispatchQueue.main.async {
                                     for auth in fetchedAuths{
@@ -247,6 +285,8 @@ struct DealCell: View {
                 Text(deal.title).fontWeight(.heavy).frame(width: UIScreen.screenWidth*0.52, alignment: .leading).padding(5)
                 Text("$" + String(deal.price)).frame(width: UIScreen.screenWidth*0.18, alignment: .trailing)
                 Button(action: {
+                    isBanned(deviceId: uniqueDeviceId, completion: { result in
+                        if(!result){
                     
                     canVote(deviceId: uniqueDeviceId, upvoted: true, completion: { result, auth in
                         if(!upvote){
@@ -255,19 +295,23 @@ struct DealCell: View {
                         }
                         if(result == 0){
                             deal.rating = deal.rating + 1
-                            updateRating(deal: deal)
+                            updateDeal(deal: deal)
                             let deviceAuth = Auth(authId: UUID().uuidString, deviceId: uniqueDeviceId, dealId: deal.dealId, upvoted: true)
                             postAuth(auth: deviceAuth)
                         } else if (result == 1) {
                             deal.rating = deal.rating + 2
-                            updateRating(deal: deal)
+                            updateDeal(deal: deal)
                             auth.upvoted = !auth.upvoted
                             updateAuth(auth: auth)
                         } else if (result == 2){
                             //pop up alert saying youve already voted or do nothing
                         }
                     })
-                    
+                        } else {
+                            //in this block the user is banned by deviceId
+                        }
+                        
+                    })
                 }) {
                     Image(systemName: "arrow.up").frame(width: UIScreen.screenWidth*0.10, alignment: .top).foregroundColor(upvote ? Color(hex: 0xe06c36) : .blue)
                 }
@@ -276,39 +320,60 @@ struct DealCell: View {
             
             HStack(alignment: .top){
                 //plus 8 in this section is hardcoded, would like to change to be %
-                Text(deal.description).frame(width: (UIScreen.screenWidth*0.70) + 8, alignment: .leading).padding(5)
+                Text(deal.description).frame(width: (UIScreen.screenWidth*0.62) + 4, alignment: .leading).padding(5)
+                Button(action:{
+                    reportDeal = true
+                }){
+                    Image(systemName: "xmark.octagon").frame(width: UIScreen.screenWidth*0.07, alignment: .trailing).foregroundColor(.red)
+                }.alert(isPresented: $reportDeal){
+                    Alert(title: Text("Are you sure you want to report this deal?"),
+                          primaryButton: .default(Text("Yes!")){
+                            //update deal to have reported flag.
+                            deal.reported = true
+                            updateDeal(deal: deal)
+                          },
+                          secondaryButton: .destructive(Text("Cancel"))
+                    )
+                }
                 
                 Button(action: {
-                    canVote(deviceId: uniqueDeviceId, upvoted: false, completion: { result, auth in
-                        if(!downvote){
-                            downvote = true
-                            upvote = false
+                    isBanned(deviceId: uniqueDeviceId, completion: { result in
+                        if(!result){
+                            canVote(deviceId: uniqueDeviceId, upvoted: false, completion: { result, auth in
+                                if(!downvote){
+                                    downvote = true
+                                    upvote = false
+                                }
+                                if(result == 0){
+                                    deal.rating = deal.rating - 1
+                                    updateDeal(deal: deal)
+                                    
+                                    if(deal.rating <= -5){
+                                        deleteDeal(deal: deal)
+                                    }
+                                    
+                                    let deviceAuth = Auth(authId: UUID().uuidString, deviceId: uniqueDeviceId, dealId: deal.dealId, upvoted: false)
+                                    postAuth(auth: deviceAuth)
+                                } else if (result == 1) {
+                                    deal.rating = deal.rating - 2
+                                    updateDeal(deal: deal)
+                                    
+                                    if(deal.rating <= -5){
+                                        deleteDeal(deal: deal)
+                                    }
+                                    
+                                    auth.upvoted = !auth.upvoted
+                                    updateAuth(auth: auth)
+                                } else if (result == 2){
+                                    //pop up alert saying youve already voted or do nothing
+                            }
+                            })
+                        } else{
+                            // if we enter this block then the user is banned by deviceId
                         }
-                        if(result == 0){
-                            deal.rating = deal.rating - 1
-                            updateRating(deal: deal)
-                            
-                            if(deal.rating <= -5){
-                                deleteDeal(deal: deal)
-                            }
-                            
-                            let deviceAuth = Auth(authId: UUID().uuidString, deviceId: uniqueDeviceId, dealId: deal.dealId, upvoted: false)
-                            postAuth(auth: deviceAuth)
-                        } else if (result == 1) {
-                            deal.rating = deal.rating - 2
-                            updateRating(deal: deal)
-                            
-                            if(deal.rating <= -5){
-                                deleteDeal(deal: deal)
-                            }
-                            
-                            auth.upvoted = !auth.upvoted
-                            updateAuth(auth: auth)
-                        } else if (result == 2){
-                            //pop up alert saying youve already voted or do nothing
-                    }
                     })
-                }) {
+                    })
+                     {
                     Image(systemName: "arrow.down").frame(width: UIScreen.screenWidth*0.10, alignment: .top).foregroundColor(downvote ? Color(hex: 0xe06c36) : .blue)
                 }
                 

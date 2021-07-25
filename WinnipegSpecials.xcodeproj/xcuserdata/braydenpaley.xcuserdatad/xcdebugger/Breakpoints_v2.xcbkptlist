@@ -30,10 +30,10 @@
             filePath = "WinnipegSpecials/DealCreationView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "188"
+            endingLineNumber = "188"
+            landmarkName = "body"
+            landmarkType = "24">
             <Locations>
                <Location
                   uuid = "D829E787-4FA0-450F-BC3E-CBA9186E501F - 75e2567bba110e61"

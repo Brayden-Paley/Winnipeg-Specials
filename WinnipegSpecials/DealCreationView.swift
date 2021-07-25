@@ -62,10 +62,50 @@ struct DealCreationView: View , KeyboardReadable{
     @State var isKeyboardVisible = false
     
     let rowHeight = CGFloat(UIScreen.screenHeight*0.05)
+    let uniqueDeviceId = UIDevice.current.identifierForVendor!.uuidString
     
     //let keyboardShow = NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
     //let keyboardHide = NotificationCenter.default.publisher(for: UIResponder.keyboardDidHideNotification)
     
+    
+    //check if user is banned
+    func isBanned(deviceId: String, completion: @escaping (Bool) -> ()){
+        guard let url = URL(string: "http://hotspotmysql-env.eba-2fmrzipg.us-east-2.elasticbeanstalk.com/api/v1/banned/") else {
+            print("Error in API endpoint call")
+            return
+        }
+        var foundBannedId = false
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+                    
+                    if let data = data {
+                        do {
+                            let fetchedBanned = try JSONDecoder().decode([Banned].self, from: data)
+                            DispatchQueue.main.async {
+                                    for banned in fetchedBanned{
+                                        print("test")
+                                        if(banned.deviceId == deviceId){
+                                            foundBannedId = true
+                                        }
+                                    }
+                                completion(foundBannedId)
+        
+                           
+                            }
+                        } catch let jsonError as NSError {
+                            print("failed in isBanned method")
+                            print("JSON decode failed: \(jsonError.localizedDescription)")
+                          }
+                        
+
+                            return
+                        }
+                }.resume()
+    }
     
     func postDeal(deal: Deal){
         guard let url = URL(string: "http://hotspotmysql-env.eba-2fmrzipg.us-east-2.elasticbeanstalk.com/api/v1/deal") else {
@@ -213,8 +253,11 @@ struct DealCreationView: View , KeyboardReadable{
                                 self.sunday = false
                             }
                             
-                            let newDeal = Deal(dealId: UUID().uuidString, restaurant: self.restaurantName, title: self.textBindingManagerTitle.text, description: self.textBindingManagerDescription.text, price: self.price.value, rating: 0, everyday: self.everyday, monday: self.monday, tuesday: self.tuesday, wednesday: self.wednesday, thursday: self.thursday, friday: self.friday, saturday: self.saturday, sunday: self.sunday)
+                            let newDeal = Deal(dealId: UUID().uuidString, restaurant: self.restaurantName, title: self.textBindingManagerTitle.text, description: self.textBindingManagerDescription.text, price: self.price.value, rating: 0, everyday: self.everyday, monday: self.monday, tuesday: self.tuesday, wednesday: self.wednesday, thursday: self.thursday, friday: self.friday, saturday: self.saturday, sunday: self.sunday, reported: false)
+                            isBanned(deviceId: uniqueDeviceId, completion: { result in
+                                if(!result){
                             postDeal(deal: newDeal)
+                                }})
                             showConfirmationAlert = true
                         } else {
                             showErrorAlert = true
